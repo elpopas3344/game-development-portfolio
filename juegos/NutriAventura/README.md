@@ -1,26 +1,27 @@
 # NutriAventura
 
 ## 📝 Descripción
-**NutriAventura** es una experiencia interactiva de carácter educativo centrada en la toma de decisiones saludables y la exploración.
-* **Objetivo:** Completar el recorrido superando pruebas y tomando las elecciones nutricionales correctas.
-* **Mecánica principal:** Exploración basada en eventos y selección de opciones en pantalla.
+**NutriAventura** es un juego interactivo de carácter educativo enfocado en la agilidad mental y la toma de decisiones rápidas sobre la alimentación.
+* **Objetivo:** Clasificar correctamente los distintos tipos de alimentos que aparecen en pantalla en sus respectivas categorías (saludables vs. comida chatarra) antes de que finalice el tiempo.
+* **Mecánica principal:** Mecánica de arrastre (drag-and-drop) o selección rápida para evaluar y ordenar elementos nutricionales de manera eficiente.
 
 ## 🎮 Género
-* Adventure / Educativo
+* Puzzle / Educativo / Casual
 
 ## ⌨️ Controles
-* **CLICK / MOUSE:** Seleccionar opciones y navegar por la interfaz.
-* **WASD / Flechas:** Movimiento del personaje (si aplica).
+* **CLICK / MOUSE:** Seleccionar, arrastrar o pulsar sobre los alimentos para colocarlos en la categoría correspondiente.
+* **ESC:** Pausa.
 
 ## 📸 Capturas de pantalla
 ![Gameplay de NutriAventura](../../assets/NutriAventura.png)
 
 ## 🛠️ Tecnologías utilizadas
-* HTML5, CSS3 y JavaScript para la gestión de estados narrativos.
-* Diseño UI asistido por herramientas de IA.
+* HTML5, CSS3 y JavaScript moderno para la manipulación del DOM y eventos de interacción.
+* Sistema de lógica condicional para el puntaje y validación de categorías.
+* Diseño UI optimizado con herramientas de apoyo de IA.
 
 ## 🚀 ¿Qué aprendimos?
-Estructurar bases de datos de texto y árboles de decisiones sencillos mediante objetos y arreglos en JavaScript.
+Manejar eventos dinámicos del mouse y lógica de colisiones o zonas de entrega (*drop zones*) en JavaScript puro para validar respuestas en tiempo real.
 
 ## 🔧 Mejoras a futuro
-Ampliar la historia con más ramas narrativas, finales alternativos y elementos gráficos personalizados.
+Incorporar una barra de vidas o tiempo dinámico, niveles con mayor velocidad de aparición de elementos y un sistema de estadísticas nutricionales al finalizar la partida.
