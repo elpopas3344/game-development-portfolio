@@ -1,0 +1,4497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CashFlow Dash</title>
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #20283b,
+            #0d111b 70%
+        );
+
+    color:white;
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+#app{
+    min-height:100vh;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+
+    min-height:95px;
+
+    padding:15px 25px;
+
+    background:#171d2b;
+
+    border-bottom:
+        1px solid #30394d;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:25px;
+
+    position:relative;
+
+    z-index:20;
+}
+
+
+.logo{
+
+    font-size:25px;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+
+    min-width:210px;
+}
+
+.logo span{
+    color:#4ade80;
+}
+
+
+/* =========================================================
+   HUD
+========================================================= */
+
+.stat{
+    min-width:145px;
+}
+
+.stat-label{
+
+    font-size:11px;
+
+    color:#8f9aae;
+
+    margin-bottom:5px;
+
+    font-weight:bold;
+}
+
+.stat-value{
+
+    font-size:21px;
+
+    font-weight:900;
+}
+
+.money{
+    color:#4ade80;
+}
+
+.savings{
+    color:#facc15;
+}
+
+.day{
+    color:#60a5fa;
+}
+
+
+/* =========================================================
+   HAPPINESS
+========================================================= */
+
+.happiness-box{
+
+    width:220px;
+}
+
+.happiness-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    font-size:12px;
+
+    margin-bottom:6px;
+
+    color:#d1d5db;
+}
+
+.happiness-bar{
+
+    height:16px;
+
+    background:#343b4c;
+
+    border-radius:20px;
+
+    overflow:hidden;
+}
+
+#happinessFill{
+
+    width:70%;
+
+    height:100%;
+
+    background:#4ade80;
+
+    border-radius:20px;
+
+    transition:
+        width .4s ease,
+        background .3s ease;
+}
+
+
+/* =========================================================
+   CREDIT
+========================================================= */
+
+.credit-box{
+
+    min-width:155px;
+
+}
+
+.credit-text{
+
+    color:#a78bfa;
+
+    font-size:17px;
+
+    font-weight:900;
+}
+
+
+/* =========================================================
+   MENU BUTTON
+========================================================= */
+
+.menu-button{
+
+    margin-left:auto;
+
+    width:45px;
+
+    height:45px;
+
+    border:0;
+
+    border-radius:10px;
+
+    background:#30394d;
+
+    color:white;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+}
+
+.menu-button:hover{
+
+    background:#45516a;
+
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main{
+
+    width:min(900px,95vw);
+
+    margin:auto;
+
+    padding:30px 0 50px;
+
+    text-align:center;
+}
+
+
+/* =========================================================
+   WEEK
+========================================================= */
+
+.week{
+
+    color:#9ca3af;
+
+    font-weight:bold;
+
+    margin-bottom:15px;
+}
+
+
+/* =========================================================
+   STRESS
+========================================================= */
+
+.stress-container{
+
+    margin:0 auto 20px;
+
+    width:400px;
+
+    max-width:90vw;
+
+}
+
+.stress-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    font-size:12px;
+
+    margin-bottom:5px;
+
+    color:#a1a1aa;
+}
+
+.stress-bar{
+
+    height:9px;
+
+    background:#303542;
+
+    border-radius:20px;
+
+    overflow:hidden;
+}
+
+#stressFill{
+
+    width:0%;
+
+    height:100%;
+
+    background:#60a5fa;
+
+    transition:.4s;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.card-wrapper{
+
+    position:relative;
+
+    width:100%;
+
+}
+
+
+.card{
+
+    min-height:400px;
+
+    background:#f8fafc;
+
+    color:#111827;
+
+    border-radius:25px;
+
+    padding:40px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.4);
+
+    transition:
+
+        transform .2s,
+
+        box-shadow .2s;
+}
+
+
+.card:hover{
+
+    transform:
+        translateY(-3px);
+
+}
+
+
+/* =========================================================
+   CARD TYPES
+========================================================= */
+
+.card.fomo{
+
+    background:
+        linear-gradient(
+            135deg,
+            #7c3aed,
+            #c026d3
+        );
+
+    color:white;
+
+    box-shadow:
+        0 0 60px
+        rgba(168,85,247,.4);
+
+}
+
+.card.emergency{
+
+    background:
+        linear-gradient(
+            135deg,
+            #7f1d1d,
+            #b91c1c
+        );
+
+    color:white;
+}
+
+.card.opportunity{
+
+    background:
+        linear-gradient(
+            135deg,
+            #064e3b,
+            #047857
+        );
+
+    color:white;
+}
+
+.card.fixed{
+
+    background:#fff1f2;
+
+}
+
+.card.burnout{
+
+    background:
+        linear-gradient(
+            135deg,
+            #312e81,
+            #581c87
+        );
+
+    color:white;
+}
+
+
+/* =========================================================
+   FOMO BADGE
+========================================================= */
+
+.fomo-badge{
+
+    position:absolute;
+
+    top:18px;
+
+    right:20px;
+
+    background:#facc15;
+
+    color:#111827;
+
+    padding:8px 15px;
+
+    border-radius:20px;
+
+    font-weight:900;
+
+    animation:fomoPulse .7s infinite;
+}
+
+@keyframes fomoPulse{
+
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.08);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+
+}
+
+
+/* =========================================================
+   CARD TEXT
+========================================================= */
+
+.card-type{
+
+    font-size:13px;
+
+    font-weight:900;
+
+    letter-spacing:1px;
+
+    margin-bottom:15px;
+}
+
+.type-normal{
+    color:#2563eb;
+}
+
+.type-fomo{
+    color:#fef08a;
+}
+
+.type-fixed{
+    color:#dc2626;
+}
+
+.type-emergency{
+    color:#fecaca;
+}
+
+.type-opportunity{
+    color:#bbf7d0;
+}
+
+.type-burnout{
+    color:#f0abfc;
+}
+
+
+.card-title{
+
+    font-size:36px;
+
+    font-weight:900;
+
+    margin-bottom:15px;
+}
+
+
+.card-description{
+
+    font-size:18px;
+
+    line-height:1.5;
+
+    color:#4b5563;
+
+    max-width:650px;
+
+    margin:0 auto 25px;
+}
+
+.card.fomo .card-description,
+.card.emergency .card-description,
+.card.opportunity .card-description,
+.card.burnout .card-description{
+
+    color:#e5e7eb;
+}
+
+
+/* =========================================================
+   COST
+========================================================= */
+
+.card-cost{
+
+    font-size:34px;
+
+    font-weight:900;
+
+    margin-bottom:20px;
+}
+
+
+/* =========================================================
+   IMPACT
+========================================================= */
+
+.impacts{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:7px;
+
+    font-size:14px;
+}
+
+.good{
+    color:#16a34a;
+}
+
+.bad{
+    color:#dc2626;
+}
+
+.card.fomo .good,
+.card.emergency .good,
+.card.opportunity .good,
+.card.burnout .good{
+
+    color:#bbf7d0;
+}
+
+.card.fomo .bad,
+.card.emergency .bad{
+
+    color:#fecaca;
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+.timer-area{
+
+    margin-top:20px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.timer-label{
+
+    color:#9ca3af;
+
+}
+
+#timer{
+
+    font-size:27px;
+
+    font-weight:900;
+
+    min-width:65px;
+
+}
+
+.timer-warning{
+
+    color:#facc15;
+
+}
+
+.timer-danger{
+
+    color:#ef4444;
+
+    animation:
+        timerBlink .25s infinite;
+}
+
+@keyframes timerBlink{
+
+    50%{
+        opacity:.2;
+    }
+
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.actions{
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:25px;
+
+    margin-top:25px;
+}
+
+
+.action{
+
+    width:330px;
+
+    max-width:45vw;
+
+    height:65px;
+
+    border:0;
+
+    border-radius:15px;
+
+    color:white;
+
+    font-size:19px;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    transition:.15s;
+}
+
+.action:hover{
+
+    transform:translateY(-4px);
+
+    filter:brightness(1.1);
+}
+
+.reject{
+
+    background:#dc2626;
+}
+
+.accept{
+
+    background:#16a34a;
+}
+
+
+/* =========================================================
+   CREDIT OPTIONS
+========================================================= */
+
+.credit-actions{
+
+    display:none;
+
+    gap:10px;
+
+    justify-content:center;
+
+    margin-top:15px;
+
+}
+
+.credit-actions.visible{
+
+    display:flex;
+}
+
+.credit-button{
+
+    padding:12px 20px;
+
+    border:0;
+
+    border-radius:10px;
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+.credit-button{
+
+    background:#7c3aed;
+}
+
+
+/* =========================================================
+   MICRO LEARNING
+========================================================= */
+
+#message{
+
+    min-height:35px;
+
+    margin-top:20px;
+
+    font-size:16px;
+
+    font-weight:900;
+}
+
+.micro{
+
+    animation:
+        microPop .4s ease;
+}
+
+@keyframes microPop{
+
+    0%{
+        transform:scale(.8);
+        opacity:0;
+    }
+
+    100%{
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+#status{
+
+    margin-top:10px;
+
+    color:#8f9aae;
+
+    font-size:12px;
+}
+
+
+/* =========================================================
+   NOTIFICATION
+========================================================= */
+
+.notification{
+
+    position:fixed;
+
+    right:25px;
+
+    bottom:25px;
+
+    background:#242b3b;
+
+    border:1px solid #414b62;
+
+    padding:15px 20px;
+
+    border-radius:12px;
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.4);
+
+    transform:translateX(140%);
+
+    transition:.3s;
+
+    z-index:100;
+}
+
+.notification.show{
+
+    transform:translateX(0);
+
+}
+
+
+/* =========================================================
+   MENU OVERLAY
+========================================================= */
+
+.overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+        rgba(0,0,0,.75);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:200;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:.2s;
+}
+
+.overlay.active{
+
+    opacity:1;
+
+    pointer-events:auto;
+}
+
+
+.menu{
+
+    width:390px;
+
+    max-width:90vw;
+
+    background:#202737;
+
+    border:1px solid #414b62;
+
+    border-radius:20px;
+
+    padding:30px;
+
+    box-shadow:
+        0 30px 100px rgba(0,0,0,.6);
+}
+
+
+.menu h2{
+
+    text-align:center;
+
+    margin-bottom:20px;
+}
+
+
+.menu-button-option{
+
+    width:100%;
+
+    padding:14px;
+
+    margin-top:10px;
+
+    border:0;
+
+    border-radius:10px;
+
+    color:white;
+
+    background:#374151;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+.menu-button-option:hover{
+
+    background:#4b5563;
+}
+
+.menu-restart{
+
+    background:#ca8a04;
+}
+
+.menu-exit{
+
+    background:#b91c1c;
+}
+
+
+/* =========================================================
+   FINAL SCREEN
+========================================================= */
+
+.final{
+
+    position:fixed;
+
+    inset:0;
+
+    background:#0d111b;
+
+    z-index:150;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:30px;
+
+    text-align:center;
+}
+
+.final.hidden{
+
+    display:none;
+}
+
+.final-icon{
+
+    font-size:75px;
+
+    margin-bottom:10px;
+}
+
+.final-title{
+
+    font-size:45px;
+
+    font-weight:900;
+
+    margin-bottom:15px;
+}
+
+.final-subtitle{
+
+    max-width:700px;
+
+    color:#cbd5e1;
+
+    line-height:1.6;
+
+    margin-bottom:25px;
+}
+
+
+.summary{
+
+    width:min(750px,95vw);
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:12px;
+
+    margin-bottom:25px;
+}
+
+.summary-box{
+
+    background:#202737;
+
+    border:1px solid #39445a;
+
+    border-radius:12px;
+
+    padding:18px;
+}
+
+.summary-label{
+
+    font-size:11px;
+
+    color:#94a3b8;
+
+    margin-bottom:7px;
+}
+
+.summary-value{
+
+    font-size:22px;
+
+    font-weight:900;
+}
+
+
+/* =========================================================
+   ACHIEVEMENTS
+========================================================= */
+
+.achievements{
+
+    width:min(750px,95vw);
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:8px;
+
+    margin-bottom:25px;
+}
+
+.achievement{
+
+    padding:8px 12px;
+
+    background:#30394d;
+
+    border-radius:20px;
+
+    font-size:12px;
+
+    font-weight:bold;
+}
+
+.achievement.locked{
+
+    opacity:.35;
+}
+
+
+.final-button{
+
+    border:0;
+
+    padding:14px 30px;
+
+    border-radius:12px;
+
+    background:#2563eb;
+
+    color:white;
+
+    font-size:17px;
+
+    font-weight:900;
+
+    cursor:pointer;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1100px){
+
+    .header{
+
+        flex-wrap:wrap;
+
+    }
+
+    .logo{
+
+        width:100%;
+
+    }
+
+}
+
+@media(max-width:700px){
+
+    .header{
+
+        gap:12px;
+
+    }
+
+    .stat{
+
+        min-width:120px;
+
+    }
+
+    .happiness-box{
+
+        width:180px;
+
+    }
+
+    .credit-box{
+
+        display:none;
+
+    }
+
+    .card{
+
+        padding:25px;
+
+    }
+
+    .card-title{
+
+        font-size:28px;
+
+    }
+
+    .actions{
+
+        flex-direction:column;
+
+        align-items:center;
+
+    }
+
+    .action{
+
+        width:90vw;
+
+        max-width:none;
+
+    }
+
+    .summary{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div id="app">
+
+
+<!-- =====================================================
+     HEADER
+====================================================== -->
+
+<header class="header">
+
+    <div class="logo">
+        CASH<span>FLOW</span> DASH
+    </div>
+
+
+    <div class="stat">
+
+        <div class="stat-label">
+            SALDO BANCARIO
+        </div>
+
+        <div
+            id="balance"
+            class="stat-value money">
+
+            $1,250
+
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="stat-label">
+            FONDO DE AHORRO
+        </div>
+
+        <div
+            id="savings"
+            class="stat-value savings">
+
+            $850
+
+        </div>
+
+    </div>
+
+
+    <div class="happiness-box">
+
+        <div class="happiness-header">
+
+            <span>
+                🧠 FELICIDAD
+            </span>
+
+            <span id="happinessText">
+                70%
+            </span>
+
+        </div>
+
+        <div class="happiness-bar">
+
+            <div
+                id="happinessFill">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="credit-box">
+
+        <div class="stat-label">
+            💳 CRÉDITO
+        </div>
+
+        <div
+            id="creditText"
+            class="credit-text">
+
+            $0 / $500
+
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div class="stat-label">
+            TIEMPO
+        </div>
+
+        <div
+            id="day"
+            class="stat-value day">
+
+            Día 1 / 30
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="menu-button"
+        onclick="openMenu()">
+
+        ☰
+
+    </button>
+
+</header>
+
+
+<!-- =====================================================
+     MAIN
+====================================================== -->
+
+<main class="main">
+
+
+    <div
+        id="week"
+        class="week">
+
+        Semana 1 de 4
+
+    </div>
+
+
+    <!-- STRESS -->
+
+    <div class="stress-container">
+
+        <div class="stress-header">
+
+            <span>
+                😰 Estrés financiero
+            </span>
+
+            <span id="stressText">
+                0%
+            </span>
+
+        </div>
+
+        <div class="stress-bar">
+
+            <div id="stressFill"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CARD -->
+
+    <div class="card-wrapper">
+
+        <div
+            id="card"
+            class="card">
+
+        </div>
+
+    </div>
+
+
+    <!-- TIMER -->
+
+    <div class="timer-area">
+
+        <span class="timer-label">
+
+            ⏱️ Tiempo para decidir:
+
+        </span>
+
+        <span id="timer">
+
+            10.0s
+
+        </span>
+
+    </div>
+
+
+    <!-- ACTIONS -->
+
+    <div class="actions">
+
+        <button
+            class="action reject"
+            onclick="rejectDecision()">
+
+            ← RECHAZAR
+
+        </button>
+
+
+        <button
+            class="action accept"
+            onclick="acceptDecision()">
+
+            ACEPTAR →
+
+        </button>
+
+    </div>
+
+
+    <!-- CREDIT ACTION -->
+
+    <div
+        id="creditActions"
+        class="credit-actions">
+
+        <button
+            class="credit-button"
+            onclick="creditDecision()">
+
+            💳 PAGAR CON CRÉDITO
+
+        </button>
+
+    </div>
+
+
+    <!-- MESSAGE -->
+
+    <div
+        id="message">
+
+    </div>
+
+
+    <div id="status">
+
+        💡 Las buenas decisiones financieras se construyen poco a poco.
+
+    </div>
+
+</main>
+
+
+<!-- =====================================================
+     NOTIFICATION
+====================================================== -->
+
+<div
+    id="notification"
+    class="notification">
+
+</div>
+
+
+<!-- =====================================================
+     MENU
+====================================================== -->
+
+<div
+    id="menuOverlay"
+    class="overlay">
+
+    <div class="menu">
+
+        <h2>
+            ☰ MENÚ
+        </h2>
+
+
+        <button
+            class="menu-button-option"
+            onclick="resumeGame()">
+
+            ▶ Continuar
+
+        </button>
+
+
+        <button
+            class="menu-button-option"
+            onclick="togglePause()">
+
+            ⏸ Pausar / Reanudar
+
+        </button>
+
+
+        <button
+            class="menu-button-option"
+            onclick="showHowToPlay()">
+
+            📖 Cómo jugar
+
+        </button>
+
+
+        <button
+            class="menu-button-option"
+            onclick="showAchievements()">
+
+            🏆 Logros
+
+        </button>
+
+
+        <button
+            class="menu-button-option menu-restart"
+            onclick="restartGame()">
+
+            ↻ Reiniciar
+
+        </button>
+
+
+        <button
+            class="menu-button-option menu-exit"
+            onclick="exitGame()">
+
+            ✕ Salir
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     FINAL
+====================================================== -->
+
+<div
+    id="finalScreen"
+    class="final hidden">
+
+    <div
+        id="finalIcon"
+        class="final-icon">
+
+        🏆
+
+    </div>
+
+
+    <div
+        id="finalTitle"
+        class="final-title">
+
+        ¡Mes Completado!
+
+    </div>
+
+
+    <div
+        id="finalSubtitle"
+        class="final-subtitle">
+
+    </div>
+
+
+    <div class="summary">
+
+        <div class="summary-box">
+
+            <div class="summary-label">
+                SALDO FINAL
+            </div>
+
+            <div
+                id="finalBalance"
+                class="summary-value money">
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-box">
+
+            <div class="summary-label">
+                AHORRO FINAL
+            </div>
+
+            <div
+                id="finalSavings"
+                class="summary-value savings">
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-box">
+
+            <div class="summary-label">
+                FELICIDAD
+            </div>
+
+            <div
+                id="finalHappiness"
+                class="summary-value">
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-box">
+
+            <div class="summary-label">
+                DEUDA
+            </div>
+
+            <div
+                id="finalDebt"
+                class="summary-value">
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-box">
+
+            <div class="summary-label">
+                GASTOS DE OCIO
+            </div>
+
+            <div
+                id="finalLeisure"
+                class="summary-value">
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-box">
+
+            <div class="summary-label">
+                DECISIONES
+            </div>
+
+            <div
+                id="finalDecisions"
+                class="summary-value">
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div
+        id="achievements"
+        class="achievements">
+
+    </div>
+
+
+    <button
+        class="final-button"
+        onclick="restartGame()">
+
+        ↻ Jugar nuevamente
+
+    </button>
+
+</div>
+
+
+<script>
+
+/* ============================================================
+   CASHFLOW DASH
+   GAME ENGINE V2
+============================================================ */
+
+
+/* ============================================================
+   CONFIGURACIÓN
+============================================================ */
+
+const CONFIG = {
+
+    initialBalance:1250,
+
+    initialSavings:850,
+
+    initialHappiness:70,
+
+    maxDays:30,
+
+    savingsGoal:1300,
+
+    initialCreditLimit:500,
+
+    weeklyInterest:0.20,
+
+    burnoutCost:150,
+
+    decisionTime:10
+
+};
+
+
+/* ============================================================
+   ESTADO
+============================================================ */
+
+let game = {
+
+    balance:1250,
+
+    savings:850,
+
+    happiness:70,
+
+    day:1,
+
+    week:1,
+
+    debt:0,
+
+    creditLimit:500,
+
+    stress:0,
+
+    timer:10,
+
+    currentCard:null,
+
+    playing:true,
+
+    paused:false,
+
+    burnout:false,
+
+    burnoutEvent:false,
+
+    leisure:0,
+
+    accepted:0,
+
+    rejected:0,
+
+    emergencies:0,
+
+    opportunities:0,
+
+    maxDebtReached:0
+
+};
+
+
+/* ============================================================
+   CARTAS NORMALES
+============================================================ */
+
+const normalCards = [
+
+    {
+        title:"☕ Café con amigos",
+
+        description:
+        "Tus amigos están saliendo por un café. Todos están invitados.",
+
+        cost:15,
+
+        type:"social",
+
+        acceptHappiness:30,
+
+        rejectHappiness:-15
+    },
+
+
+    {
+        title:"🍕 Cena con amigos",
+
+        description:
+        "Tu grupo está organizando una cena esta noche.",
+
+        cost:40,
+
+        type:"social",
+
+        acceptHappiness:30,
+
+        rejectHappiness:-20
+    },
+
+
+    {
+        title:"🎮 Videojuego en oferta",
+
+        description:
+        "El videojuego que querías está disponible con descuento.",
+
+        cost:40,
+
+        type:"fomo",
+
+        acceptHappiness:30,
+
+        rejectHappiness:-15,
+
+        fomo:true
+    },
+
+
+    {
+        title:"🎵 Concierto exclusivo",
+
+        description:
+        "Tus amigos ya compraron entradas. Quedan pocas.",
+
+        cost:80,
+
+        type:"fomo",
+
+        acceptHappiness:45,
+
+        rejectHappiness:-25,
+
+        fomo:true
+    },
+
+
+    {
+        title:"👟 Tenis edición limitada",
+
+        description:
+        "🔥 50% DE DESCUENTO. La oferta desaparece pronto.",
+
+        cost:100,
+
+        type:"fomo",
+
+        acceptHappiness:50,
+
+        rejectHappiness:-25,
+
+        fomo:true
+    },
+
+
+    {
+        title:"📱 Smartphone de oferta",
+
+        description:
+        "Una oferta relámpago que parece demasiado buena para dejarla pasar.",
+
+        cost:150,
+
+        type:"fomo",
+
+        acceptHappiness:50,
+
+        rejectHappiness:-25,
+
+        fomo:true
+    },
+
+
+    {
+        title:"💡 Factura de electricidad",
+
+        description:
+        "La factura vence hoy. Ignorarla genera una penalización.",
+
+        cost:30,
+
+        type:"fixed",
+
+        lateFee:100,
+
+        acceptHappiness:0,
+
+        rejectHappiness:0
+    },
+
+
+    {
+        title:"🏠 Alquiler",
+
+        description:
+        "Debes pagar el alquiler para evitar una deuda importante.",
+
+        cost:300,
+
+        type:"fixed",
+
+        lateFee:250,
+
+        acceptHappiness:0,
+
+        rejectHappiness:0
+    },
+
+
+    {
+        title:"🌐 Internet",
+
+        description:
+        "Tu servicio de Internet está próximo a vencer.",
+
+        cost:35,
+
+        type:"fixed",
+
+        lateFee:120,
+
+        acceptHappiness:0,
+
+        rejectHappiness:0
+    }
+
+];
+
+
+/* ============================================================
+   EMERGENCIAS
+============================================================ */
+
+const emergencyCards = [
+
+    {
+        title:"📱 Pantalla rota",
+
+        description:
+        "Tu celular cayó al suelo. La pantalla necesita reparación.",
+
+        cost:120,
+
+        type:"emergency",
+
+        acceptHappiness:-5,
+
+        rejectHappiness:-20
+    },
+
+
+    {
+        title:"🦷 Visita al dentista",
+
+        description:
+        "Tienes un problema dental que requiere atención.",
+
+        cost:90,
+
+        type:"emergency",
+
+        acceptHappiness:-5,
+
+        rejectHappiness:-10
+    },
+
+
+    {
+        title:"💻 Computadora dañada",
+
+        description:
+        "Tu computadora falló justo antes de una entrega universitaria.",
+
+        cost:180,
+
+        type:"emergency",
+
+        acceptHappiness:-5,
+
+        rejectHappiness:-20
+    }
+
+];
+
+
+/* ============================================================
+   OPORTUNIDADES
+============================================================ */
+
+const opportunityCards = [
+
+    {
+        title:"👕 Venta de ropa usada",
+
+        description:
+        "Encontraste ropa que ya no utilizas. Puedes venderla.",
+
+        reward:80,
+
+        type:"opportunity",
+
+        happiness:-2
+    },
+
+
+    {
+        title:"💻 Trabajo freelance",
+
+        description:
+        "Un pequeño negocio necesita ayuda durante el fin de semana.",
+
+        reward:150,
+
+        type:"opportunity",
+
+        happiness:-5
+    },
+
+
+    {
+        title:"📚 Tutoría universitaria",
+
+        description:
+        "Otro estudiante necesita ayuda con una materia que dominas.",
+
+        reward:100,
+
+        type:"opportunity",
+
+        happiness:-5
+    }
+
+];
+
+
+/* ============================================================
+   GENERAR CARTA
+============================================================ */
+
+function generateCard(){
+
+    if(!game.playing){
+        return;
+    }
+
+
+    /* BURNOUT */
+
+    if(
+        game.burnout &&
+        !game.burnoutEvent
+    ){
+
+        game.currentCard = {
+
+            title:"🏥 TERAPIA DE EMERGENCIA",
+
+            description:
+            "Tu bienestar llegó a 0%. Necesitas atención para recuperarte.",
+
+            cost:150,
+
+            type:"burnout",
+
+            acceptHappiness:30,
+
+            rejectHappiness:0
+
+        };
+
+        game.timer=10;
+
+        game.burnoutEvent=true;
+
+        render();
+
+        return;
+    }
+
+
+    /* SEMANA 3-4 */
+
+    if(game.week >= 3){
+
+        const random=Math.random();
+
+
+        if(random < .25){
+
+            game.currentCard =
+            randomItem(emergencyCards);
+
+            game.timer=10;
+
+            render();
+
+            return;
+
+        }
+
+
+        if(random < .40){
+
+            game.currentCard =
+            randomItem(opportunityCards);
+
+            game.timer=10;
+
+            render();
+
+            return;
+
+        }
+
+    }
+
+
+    /* SEMANA 2 */
+
+    if(game.week === 2){
+
+        if(Math.random()<.10){
+
+            game.currentCard =
+            randomItem(emergencyCards);
+
+            game.timer=10;
+
+            render();
+
+            return;
+
+        }
+
+    }
+
+
+    /* NORMAL */
+
+    game.currentCard =
+    randomItem(normalCards);
+
+    game.timer=10;
+
+    render();
+
+}
+
+
+/* ============================================================
+   ACEPTAR
+============================================================ */
+
+function acceptDecision(){
+
+    if(
+        !game.playing ||
+        game.paused
+    ){
+        return;
+    }
+
+
+    const card =
+    game.currentCard;
+
+
+    /* BURNOUT */
+
+    if(card.type==="burnout"){
+
+        if(game.balance < card.cost){
+
+            showDefeat(
+                "No pudiste pagar la terapia de emergencia."
+            );
+
+            return;
+
+        }
+
+        game.balance-=card.cost;
+
+        game.happiness=30;
+
+        game.burnout=false;
+
+        game.burnoutEvent=false;
+
+        showMicro(
+            "🧠 Cuidar tu bienestar también importa."
+        );
+
+        nextDay();
+
+        return;
+
+    }
+
+
+    /* OPORTUNIDAD */
+
+    if(card.type==="opportunity"){
+
+        game.balance+=card.reward;
+
+        game.happiness+=card.happiness;
+
+        game.opportunities++;
+
+        limitHappiness();
+
+        showMicro(
+            `💰 +$${card.reward} — "Un ingreso extra ayuda."`
+        );
+
+        showNotification(
+            `💰 Ganaste $${card.reward}`
+        );
+
+        nextDay();
+
+        return;
+
+    }
+
+
+    /* GASTOS */
+
+    if(card.cost > game.balance){
+
+        if(game.creditLimit-game.debt >= card.cost){
+
+            showMicro(
+                "💳 No tienes efectivo suficiente. Usa crédito."
+            );
+
+            document
+            .getElementById("creditActions")
+            .classList.add("visible");
+
+            return;
+
+        }
+
+        showDefeat(
+            "No tienes suficiente dinero para afrontar este gasto."
+        );
+
+        return;
+
+    }
+
+
+    game.balance-=card.cost;
+
+    game.accepted++;
+
+
+    if(
+        card.type==="social" ||
+        card.type==="fomo"
+    ){
+
+        game.leisure+=card.cost;
+
+    }
+
+
+    if(card.type==="fixed"){
+
+        showMicro(
+            "💡 " +
+            "Las necesidades van primero."
+        );
+
+    }else{
+
+        game.happiness+=
+        card.acceptHappiness;
+
+        showMicro(
+            `❤️ +${card.acceptHappiness}% — "Disfrutar también cuesta."`
+        );
+
+    }
+
+
+    limitHappiness();
+
+
+    showNotification(
+        "❤️ + Likes    ⭐ + Estatus"
+    );
+
+
+    checkState();
+
+
+    if(game.playing){
+
+        nextDay();
+
+    }
+
+}
+
+
+/* ============================================================
+   CRÉDITO
+============================================================ */
+
+function creditDecision(){
+
+    if(
+        !game.playing ||
+        game.paused
+    ){
+        return;
+    }
+
+
+    const card =
+    game.currentCard;
+
+
+    const available =
+    game.creditLimit-game.debt;
+
+
+    if(card.cost > available){
+
+        showMicro(
+            "🚨 Tu límite de crédito no alcanza."
+        );
+
+        return;
+
+    }
+
+
+    game.debt+=card.cost;
+
+    game.accepted++;
+
+    game.maxDebtReached =
+    Math.max(
+        game.maxDebtReached,
+        game.debt
+    );
+
+
+    if(
+        card.type==="social" ||
+        card.type==="fomo"
+    ){
+
+        game.leisure+=card.cost;
+
+        game.happiness+=
+        card.acceptHappiness;
+
+    }
+
+
+    limitHappiness();
+
+    updateStress();
+
+
+    showMicro(
+        "💳 " +
+        "Disfrutas ahora, pagas después."
+    );
+
+
+    showNotification(
+        `💳 Nueva deuda: $${game.debt}`
+    );
+
+
+    document
+    .getElementById("creditActions")
+    .classList.remove("visible");
+
+
+    checkState();
+
+
+    if(game.playing){
+
+        nextDay();
+
+    }
+
+}
+
+
+/* ============================================================
+   RECHAZAR
+============================================================ */
+
+function rejectDecision(){
+
+    if(
+        !game.playing ||
+        game.paused
+    ){
+        return;
+    }
+
+
+    const card =
+    game.currentCard;
+
+
+    document
+    .getElementById("creditActions")
+    .classList.remove("visible");
+
+
+    /* FIXED */
+
+    if(card.type==="fixed"){
+
+        game.balance-=card.lateFee;
+
+        game.rejected++;
+
+        showMicro(
+            "⚠️ " +
+            "¡La mora te costará más!"
+        );
+
+        showNotification(
+            `⚠️ Mora: -$${card.lateFee}`
+        );
+
+    }
+
+
+    /* SOCIAL / FOMO */
+
+    else if(
+        card.type==="social" ||
+        card.type==="fomo"
+    ){
+
+        game.happiness+=
+        card.rejectHappiness;
+
+        game.savings+=
+        card.cost;
+
+        game.rejected++;
+
+        limitHappiness();
+
+        showMicro(
+            "🏦 " +
+            "Ahorrar hoy protege mañana."
+        );
+
+        showNotification(
+            `🏦 +$${card.cost} protegidos`
+        );
+
+    }
+
+
+    /* EMERGENCY */
+
+    else if(card.type==="emergency"){
+
+        game.happiness+=
+        card.rejectHappiness;
+
+        game.rejected++;
+
+        limitHappiness();
+
+
+        const futureCost =
+        Math.round(
+            card.cost*1.55
+        );
+
+
+        game.balance-=
+        futureCost;
+
+
+        showMicro(
+            "🚨 " +
+            "Ignorar una emergencia sale caro."
+        );
+
+    }
+
+
+    /* BURNOUT */
+
+    else if(card.type==="burnout"){
+
+        showDefeat(
+            "Ignoraste la atención de emergencia durante el Burnout."
+        );
+
+        return;
+
+    }
+
+
+    checkState();
+
+
+    if(game.playing){
+
+        nextDay();
+
+    }
+
+}
+
+
+/* ============================================================
+   SIGUIENTE DÍA
+============================================================ */
+
+function nextDay(){
+
+    if(!game.playing){
+
+        return;
+
+    }
+
+
+    game.day++;
+
+
+    game.week =
+    Math.min(
+        4,
+        Math.floor(
+            (game.day-1)/7
+        )+1
+    );
+
+
+    /* FIN DE SEMANA */
+
+    if(
+        game.day===8 ||
+        game.day===15 ||
+        game.day===22 ||
+        game.day===29
+    ){
+
+        applyWeeklyInterest();
+
+    }
+
+
+    if(game.day>30){
+
+        checkVictory();
+
+        return;
+
+    }
+
+
+    generateCard();
+
+}
+
+
+/* ============================================================
+   INTERÉS
+============================================================ */
+
+function applyWeeklyInterest(){
+
+    if(game.debt<=0){
+
+        return;
+
+    }
+
+
+    const interest =
+    Math.ceil(
+        game.debt *
+        CONFIG.weeklyInterest
+    );
+
+
+    game.debt+=interest;
+
+
+    game.maxDebtReached =
+    Math.max(
+        game.maxDebtReached,
+        game.debt
+    );
+
+
+    showNotification(
+        `📈 Interés semanal: +$${interest}`
+    );
+
+
+    showMicro(
+        "📈 " +
+        "El interés hace crecer tu deuda."
+    );
+
+
+    updateStress();
+
+
+    /*
+        Si deuda supera límite
+        el límite se reduce.
+    */
+
+    if(game.debt>=500){
+
+        game.creditLimit=250;
+
+    }else if(game.debt>=400){
+
+        game.creditLimit=250;
+
+    }else if(game.debt>=250){
+
+        game.creditLimit=400;
+
+    }else{
+
+        game.creditLimit=500;
+
+    }
+
+}
+
+
+/* ============================================================
+   BURNOUT
+============================================================ */
+
+function checkBurnout(){
+
+    if(
+        game.happiness<=0 &&
+        !game.burnout
+    ){
+
+        game.happiness=0;
+
+        game.burnout=true;
+
+        game.burnoutEvent=false;
+
+
+        showNotification(
+            "🧠 BURNOUT"
+        );
+
+
+        generateCard();
+
+    }
+
+}
+
+
+/* ============================================================
+   ESTADO
+============================================================ */
+
+function checkState(){
+
+    limitHappiness();
+
+    updateStress();
+
+    checkBurnout();
+
+
+    if(game.balance<=0){
+
+        showDefeat(
+            "Tu saldo bancario llegó a $0."
+        );
+
+        return;
+
+    }
+
+
+    if(
+        game.debt>=game.creditLimit &&
+        game.balance<=0
+    ){
+
+        showDefeat(
+            "Acumulaste demasiada deuda y perdiste el control financiero."
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   ESTRÉS
+============================================================ */
+
+function updateStress(){
+
+    let debtStress =
+    (game.debt /
+    Math.max(
+        1,
+        game.creditLimit
+    ))*100;
+
+
+    let happinessStress =
+    (100-game.happiness)*.35;
+
+
+    game.stress =
+    Math.min(
+        100,
+        Math.round(
+            debtStress*.65+
+            happinessStress
+        )
+    );
+
+}
+
+
+/* ============================================================
+   FELICIDAD
+============================================================ */
+
+function limitHappiness(){
+
+    game.happiness=
+    Math.max(
+        0,
+        Math.min(
+            100,
+            game.happiness
+        )
+    );
+
+}
+
+
+/* ============================================================
+   VICTORIA
+============================================================ */
+
+function checkVictory(){
+
+    if(
+        game.balance>=0 &&
+        game.savings>=CONFIG.savingsGoal &&
+        game.happiness>0 &&
+        game.debt===0
+    ){
+
+        game.playing=false;
+
+        showVictory();
+
+    }else{
+
+        showDefeat(
+            "Llegaste al final sin cumplir todas las metas financieras."
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   VICTORIA
+============================================================ */
+
+function showVictory(){
+
+    const screen =
+    document.getElementById(
+        "finalScreen"
+    );
+
+    screen.className="final";
+
+
+    document.getElementById(
+        "finalIcon"
+    ).textContent="🏆";
+
+
+    document.getElementById(
+        "finalTitle"
+    ).textContent=
+    "¡Mes Completado con Éxito!";
+
+
+    document.getElementById(
+        "finalSubtitle"
+    ).innerHTML=
+    "Llegaste al Día 30 manteniendo tus finanzas bajo control.<br><br>Ahora puedes intentar desbloquear otros estilos de juego.";
+
+
+    fillFinal();
+
+}
+
+
+/* ============================================================
+   DERROTA
+============================================================ */
+
+function showDefeat(cause){
+
+    game.playing=false;
+
+
+    const screen =
+    document.getElementById(
+        "finalScreen"
+    );
+
+    screen.className="final";
+
+
+    document.getElementById(
+        "finalIcon"
+    ).textContent="💥";
+
+
+    document.getElementById(
+        "finalTitle"
+    ).textContent="¡QUIEBRA!";
+
+
+    document.getElementById(
+        "finalSubtitle"
+    ).innerHTML=
+    `<strong>${cause}</strong><br><br>
+    💡 Consejo: crea un fondo de emergencia y evita usar crédito para gastos impulsivos.`;
+
+
+    fillFinal();
+
+}
+
+
+/* ============================================================
+   ESTADÍSTICAS
+============================================================ */
+
+function fillFinal(){
+
+    document.getElementById(
+        "finalBalance"
+    ).textContent=
+    `$${game.balance}`;
+
+
+    document.getElementById(
+        "finalSavings"
+    ).textContent=
+    `$${game.savings}`;
+
+
+    document.getElementById(
+        "finalHappiness"
+    ).textContent=
+    `${game.happiness}%`;
+
+
+    document.getElementById(
+        "finalDebt"
+    ).textContent=
+    `$${game.debt}`;
+
+
+    document.getElementById(
+        "finalLeisure"
+    ).textContent=
+    `$${game.leisure}`;
+
+
+    document.getElementById(
+        "finalDecisions"
+    ).textContent=
+    `${game.accepted} aceptadas / ${game.rejected} rechazadas`;
+
+
+    calculateAchievements();
+
+}
+
+
+/* ============================================================
+   LOGROS
+============================================================ */
+
+function calculateAchievements(){
+
+    const list=[];
+
+
+    /*
+        Inversionista Novato
+    */
+
+    if(
+        game.savings>=1500 &&
+        game.balance>=300 &&
+        game.debt===0
+    ){
+
+        list.push(
+            "🏆 Inversionista Novato"
+        );
+
+    }
+
+
+    /*
+        Maestro del Ahorro
+    */
+
+    if(
+        game.savings>=2000 &&
+        game.rejected>=12
+    ){
+
+        list.push(
+            "🏦 Maestro del Ahorro"
+        );
+
+    }
+
+
+    /*
+        Sobreviviente al Burnout
+    */
+
+    if(
+        game.maxDebtReached>=0 &&
+        game.happiness<=15 &&
+        game.day>=30 &&
+        game.balance>0
+    ){
+
+        list.push(
+            "🧠 Sobreviviente al Burnout"
+        );
+
+    }
+
+
+    /*
+        Minimalista
+    */
+
+    if(
+        game.leisure<=250 &&
+        game.debt===0 &&
+        game.savings>=1300
+    ){
+
+        list.push(
+            "🧘 Minimalista"
+        );
+
+    }
+
+
+    const all=[
+
+        "🏆 Inversionista Novato",
+
+        "🏦 Maestro del Ahorro",
+
+        "🧠 Sobreviviente al Burnout",
+
+        "🧘 Minimalista"
+
+    ];
+
+
+    document.getElementById(
+        "achievements"
+    ).innerHTML=
+    all.map(
+        achievement=>{
+
+            const unlocked =
+            list.includes(
+                achievement
+            );
+
+            return `
+
+                <div
+                    class="achievement
+                    ${unlocked?"":"locked"}">
+
+                    ${achievement}
+
+                </div>
+
+            `;
+
+        }
+    ).join("");
+
+}
+
+
+/* ============================================================
+   RENDER
+============================================================ */
+
+function render(){
+
+    const card =
+    game.currentCard;
+
+
+    if(!card){
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "balance"
+    ).textContent=
+    `$${game.balance.toLocaleString()}`;
+
+
+    document.getElementById(
+        "savings"
+    ).textContent=
+    `$${game.savings.toLocaleString()}`;
+
+
+    document.getElementById(
+        "happinessText"
+    ).textContent=
+    `${game.happiness}%`;
+
+
+    document.getElementById(
+        "day"
+    ).textContent=
+    `Día ${Math.min(game.day,30)} / 30`;
+
+
+    document.getElementById(
+        "week"
+    ).textContent=
+    `Semana ${game.week} de 4`;
+
+
+    document.getElementById(
+        "creditText"
+    ).textContent=
+    `$${game.debt} / $${game.creditLimit}`;
+
+
+    updateStress();
+
+
+    document.getElementById(
+        "stressText"
+    ).textContent=
+    `${game.stress}%`;
+
+
+    document.getElementById(
+        "stressFill"
+    ).style.width=
+    `${game.stress}%`;
+
+
+    const happinessFill=
+    document.getElementById(
+        "happinessFill"
+    );
+
+
+    happinessFill.style.width=
+    `${game.happiness}%`;
+
+
+    if(game.happiness>50){
+
+        happinessFill.style.background=
+        "#4ade80";
+
+    }else if(game.happiness>25){
+
+        happinessFill.style.background=
+        "#facc15";
+
+    }else{
+
+        happinessFill.style.background=
+        "#ef4444";
+
+    }
+
+
+    /* TIMER */
+
+    const timer =
+    document.getElementById(
+        "timer"
+    );
+
+
+    timer.textContent=
+    `${game.timer.toFixed(1)}s`;
+
+
+    timer.className="";
+
+
+    if(game.timer<=5){
+
+        timer.classList.add(
+            "timer-warning"
+        );
+
+    }
+
+
+    if(game.timer<=2){
+
+        timer.classList.remove(
+            "timer-warning"
+        );
+
+        timer.classList.add(
+            "timer-danger"
+        );
+
+    }
+
+
+    /* CARD */
+
+    const cardElement=
+    document.getElementById(
+        "card"
+    );
+
+
+    cardElement.className="card";
+
+
+    if(card.fomo){
+
+        cardElement.classList.add(
+            "fomo"
+        );
+
+    }
+
+    if(card.type==="emergency"){
+
+        cardElement.classList.add(
+            "emergency"
+        );
+
+    }
+
+    if(card.type==="opportunity"){
+
+        cardElement.classList.add(
+            "opportunity"
+        );
+
+    }
+
+    if(card.type==="fixed"){
+
+        cardElement.classList.add(
+            "fixed"
+        );
+
+    }
+
+    if(card.type==="burnout"){
+
+        cardElement.classList.add(
+            "burnout"
+        );
+
+    }
+
+
+    let type="NUEVA DECISIÓN";
+
+    let typeClass="type-normal";
+
+
+    if(card.fomo){
+
+        type="🔥 OFERTA FOMO";
+
+        typeClass="type-fomo";
+
+    }
+
+    if(card.type==="fixed"){
+
+        type="⚠ GASTO OBLIGATORIO";
+
+        typeClass="type-fixed";
+
+    }
+
+    if(card.type==="emergency"){
+
+        type="🚨 EMERGENCIA REALISTA";
+
+        typeClass="type-emergency";
+
+    }
+
+    if(card.type==="opportunity"){
+
+        type="💰 OPORTUNIDAD";
+
+        typeClass="type-opportunity";
+
+    }
+
+    if(card.type==="burnout"){
+
+        type="🧠 BURNOUT";
+
+        typeClass="type-burnout";
+
+    }
+
+
+    let content="";
+
+
+    if(card.type==="opportunity"){
+
+        content=`
+
+            <div class="good">
+                ✓ Aceptar: +$${card.reward}
+            </div>
+
+            <div class="bad">
+                ⚠ Costo de tiempo: ${card.happiness}% felicidad
+            </div>
+
+        `;
+
+    }
+
+    else if(card.type==="fixed"){
+
+        content=`
+
+            <div class="good">
+                ✓ Pagar: -$${card.cost}
+            </div>
+
+            <div class="bad">
+                ✕ Rechazar: -$${card.lateFee} por mora
+            </div>
+
+        `;
+
+    }
+
+    else if(card.type==="burnout"){
+
+        content=`
+
+            <div class="good">
+                ✓ Terapia: +30% bienestar
+            </div>
+
+            <div class="bad">
+                ⚠ Costo: $150
+            </div>
+
+        `;
+
+    }
+
+    else{
+
+        content=`
+
+            <div class="good">
+                ✓ Aceptar: +${card.acceptHappiness}% felicidad
+            </div>
+
+            <div class="bad">
+                ✕ Rechazar: ${card.rejectHappiness}% felicidad
+            </div>
+
+        `;
+
+    }
+
+
+    const badge =
+    card.fomo
+    ?
+    `<div class="fomo-badge">
+        ⚡ FOMO
+    </div>`
+    :
+    "";
+
+
+    const cost =
+    card.type==="opportunity"
+    ?
+    `+$${card.reward}`
+    :
+    `$${card.cost}`;
+
+
+    cardElement.innerHTML=`
+
+        ${badge}
+
+        <div class="card-type ${typeClass}">
+            ${type}
+        </div>
+
+        <div class="card-title">
+            ${card.title}
+        </div>
+
+        <div class="card-description">
+            ${card.description}
+        </div>
+
+        <div class="card-cost">
+            ${cost}
+        </div>
+
+        <div class="impacts">
+            ${content}
+        </div>
+
+    `;
+
+
+    document.getElementById(
+        "status"
+    ).textContent=
+    game.burnout
+    ?
+    "⚠ BURNOUT — necesitas resolver la emergencia."
+    :
+    "💡 Piensa: ¿necesidad, deseo o emergencia?";
+
+
+}
+
+
+/* ============================================================
+   TIMER LOOP
+============================================================ */
+
+let lastTime=
+performance.now();
+
+
+function loop(){
+
+    if(
+        game.playing &&
+        !game.paused
+    ){
+
+        const now=
+        performance.now();
+
+
+        const delta=
+        (now-lastTime)/1000;
+
+
+        lastTime=now;
+
+
+        game.timer-=delta;
+
+
+        if(game.timer<=0){
+
+            game.timer=0;
+
+
+            showMicro(
+                "⏰ " +
+                "Se acabó el tiempo."
+            );
+
+
+            /*
+                Timeout = rechazo
+            */
+
+            rejectDecision();
+
+        }
+
+        render();
+
+    }else{
+
+        lastTime=
+        performance.now();
+
+    }
+
+
+    requestAnimationFrame(
+        loop
+    );
+
+}
+
+loop();
+
+
+/* ============================================================
+   MICRO FEEDBACK
+============================================================ */
+
+function showMicro(text){
+
+    const message=
+    document.getElementById(
+        "message"
+    );
+
+
+    message.textContent=text;
+
+    message.className="micro";
+
+
+    setTimeout(
+        ()=>{
+            message.className="";
+        },
+        500
+    );
+
+}
+
+
+/* ============================================================
+   NOTIFICATION
+============================================================ */
+
+let notificationTimeout;
+
+
+function showNotification(text){
+
+    const notification=
+    document.getElementById(
+        "notification"
+    );
+
+
+    notification.textContent=text;
+
+    notification.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        notificationTimeout
+    );
+
+
+    notificationTimeout=
+    setTimeout(
+        ()=>{
+            notification.classList.remove(
+                "show"
+            );
+        },
+        2200
+    );
+
+}
+
+
+/* ============================================================
+   MENU
+============================================================ */
+
+function openMenu(){
+
+    game.paused=true;
+
+
+    document.getElementById(
+        "menuOverlay"
+    ).classList.add(
+        "active"
+    );
+
+}
+
+
+function closeMenu(){
+
+    document.getElementById(
+        "menuOverlay"
+    ).classList.remove(
+        "active"
+    );
+
+}
+
+
+function resumeGame(){
+
+    game.paused=false;
+
+    closeMenu();
+
+}
+
+
+function togglePause(){
+
+    game.paused=
+    !game.paused;
+
+}
+
+
+/* ============================================================
+   CÓMO JUGAR
+============================================================ */
+
+function showHowToPlay(){
+
+    alert(
+
+`CASHFLOW DASH
+
+🎮 OBJETIVO
+
+Llegar al Día 30 sin quebrar.
+
+💵 SALDO
+Dinero disponible para gastos.
+
+🏦 AHORRO
+Tu fondo de emergencia.
+
+🧠 FELICIDAD
+Si llega a 0%, entras en Burnout.
+
+💳 CRÉDITO
+Puedes usarlo para gastos grandes,
+pero acumula deuda.
+
+📈 INTERÉS
+La deuda aumenta 20% cada semana.
+
+⏱️ DECISIONES
+Tienes 10 segundos por tarjeta.
+
+← RECHAZAR
+Evita gastos, pero puede reducir felicidad.
+
+ACEPTAR →
+Gasta dinero pero puede aumentar felicidad.
+
+🔥 FOMO
+Las ofertas intentan hacerte gastar
+por presión social.
+
+🏆 OBJETIVO FINAL
+Llegar al Día 30 con:
+
+Saldo ≥ $0
+Ahorro ≥ $1,300
+Felicidad > 0%
+Deuda = $0`
+
+    );
+
+}
+
+
+/* ============================================================
+   LOGROS
+============================================================ */
+
+function showAchievements(){
+
+    alert(
+
+`🏆 LOGROS
+
+🏆 INVERSIONISTA NOVATO
+Ahorro ≥ $1,500
+Saldo ≥ $300
+Deuda = $0
+
+🏦 MAESTRO DEL AHORRO
+Ahorro ≥ $2,000
+12+ gastos rechazados
+
+🧠 SOBREVIVIENTE AL BURNOUT
+Llegar a ≤15% felicidad
+y sobrevivir hasta el Día 30
+
+🧘 MINIMALISTA
+Ocio ≤ $250
+Ahorro ≥ $1,300
+Deuda = $0`
+
+    );
+
+}
+
+
+/* ============================================================
+   REINICIAR
+============================================================ */
+
+function restartGame(){
+
+    game={
+
+        balance:1250,
+
+        savings:850,
+
+        happiness:70,
+
+        day:1,
+
+        week:1,
+
+        debt:0,
+
+        creditLimit:500,
+
+        stress:0,
+
+        timer:10,
+
+        currentCard:null,
+
+        playing:true,
+
+        paused:false,
+
+        burnout:false,
+
+        burnoutEvent:false,
+
+        leisure:0,
+
+        accepted:0,
+
+        rejected:0,
+
+        emergencies:0,
+
+        opportunities:0,
+
+        maxDebtReached:0
+
+    };
+
+
+    document.getElementById(
+        "finalScreen"
+    ).className=
+    "final hidden";
+
+
+    closeMenu();
+
+
+    generateCard();
+
+    render();
+
+}
+
+
+/* ============================================================
+   SALIR
+============================================================ */
+
+function exitGame(){
+
+    closeMenu();
+
+    showNotification(
+        "Puedes cerrar esta pestaña para salir."
+    );
+
+}
+
+
+/* ============================================================
+   UTILIDADES
+============================================================ */
+
+function randomItem(array){
+
+    return array[
+        Math.floor(
+            Math.random()*
+            array.length
+        )
+    ];
+
+}
+
+
+/* ============================================================
+   TECLADO
+============================================================ */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key==="Escape"){
+
+            if(
+                document
+                .getElementById("menuOverlay")
+                .classList
+                .contains("active")
+            ){
+
+                resumeGame();
+
+            }else{
+
+                openMenu();
+
+            }
+
+        }
+
+
+        if(
+            game.playing &&
+            !game.paused
+        ){
+
+            if(event.key==="ArrowLeft"){
+
+                rejectDecision();
+
+            }
+
+
+            if(event.key==="ArrowRight"){
+
+                acceptDecision();
+
+            }
+
+        }
+
+    }
+);
+
+
+/* ============================================================
+   MENÚ CONTEXTUAL
+============================================================ */
+
+document.addEventListener(
+    "contextmenu",
+    function(event){
+
+        event.preventDefault();
+
+        openMenu();
+
+    }
+);
+
+
+/* ============================================================
+   INICIO
+============================================================ */
+
+generateCard();
+
+render();
+
+
+/* ============================================================
+   CASHFLOW DASH LIFE SIMULATOR EXPANSION
+   Sistema de días, relaciones, energía y eventos narrativos
+============================================================ */
+
+Object.assign(game,{
+    social:60,
+    energy:70,
+    currentDayType:null,
+    lifeDiary:[]
+});
+
+
+function clampLifeStats(){
+
+    game.social=Math.max(0,Math.min(100,game.social));
+    game.energy=Math.max(0,Math.min(100,game.energy));
+}
+
+
+function selectDayType(){
+
+    if(game.day===1 || game.day===15)
+        return "income";
+
+    let r=Math.random();
+
+    if(r<0.35)
+        return "routine";
+
+    if(r<0.65)
+        return "story";
+
+    if(r<0.85)
+        return "emergency";
+
+    return "minigame";
+}
+
+
+function generateLifeDay(){
+
+    game.currentDayType=selectDayType();
+
+    switch(game.currentDayType){
+
+        case "routine":
+            routineLifeDay();
+            break;
+
+        case "income":
+            incomeLifeDay();
+            break;
+
+        case "story":
+            createNarrativeEvent();
+            break;
+
+        case "emergency":
+            createLifeEmergency();
+            break;
+
+        case "minigame":
+            budgetMiniGame();
+            break;
+    }
+}
+
+
+function routineLifeDay(){
+
+    game.energy+=5;
+    game.happiness+=5;
+    clampLifeStats();
+    showMicro("🌱 Día tranquilo: descansar también mejora tu futuro.");
+
+    setTimeout(()=>{
+        if(game.playing) nextDay();
+    },1800);
+}
+
+
+function incomeLifeDay(){
+
+    let income=800;
+
+    game.balance+=income;
+
+    showMicro(
+        "💰 Día de cobro: recibiste $"+income+
+        ". Decide cómo organizarlo."
+    );
+
+    game.savings+=Math.floor(income*0.30);
+    game.energy+=5;
+
+    clampLifeStats();
+    render();
+}
+
+
+const lifeStories=[
+
+{
+title:"🎂 Cumpleaños de tu mejor amigo",
+description:"Quieres acompañarlo sin descuidar tus finanzas.",
+options:[
+["🎁 Regalo caro",-120,20,15],
+["🍰 Detalle económico",-30,15,10],
+["🚫 No asistir",0,-20,-10]
+]
+},
+
+{
+title:"📚 Examen importante",
+description:"Debes decidir entre estudiar o salir.",
+options:[
+["Estudiar toda la noche",0,-10,10],
+["Equilibrar descanso y estudio",-20,10,5],
+["Salir con amigos",-50,20,-5]
+]
+}
+
+];
+
+
+function createNarrativeEvent(){
+
+    let event=lifeStories[
+        Math.floor(Math.random()*lifeStories.length)
+    ];
+
+    game.currentCard={
+        title:event.title,
+        description:event.description,
+        type:"story",
+        options:event.options
+    };
+
+    renderLifeStory(event);
+}
+
+
+function renderLifeStory(event){
+
+    let card=document.getElementById("card");
+
+    card.innerHTML=`
+    <div class="card-type">📖 EVENTO DE VIDA</div>
+    <div class="card-title">${event.title}</div>
+    <div class="card-description">${event.description}</div>
+    ${event.options.map((o,i)=>`
+    <button class="action accept"
+    onclick="chooseLifeOption(${i})">
+    ${o[0]}
+    </button>`).join("")}
+    `;
+}
+
+
+function chooseLifeOption(index){
+
+    let options=game.currentCard.options;
+    let option=options[index];
+
+    game.balance+=option[1];
+    game.social+=option[2];
+    game.happiness+=option[3];
+
+    game.decisions++;
+
+    clampLifeStats();
+    nextDay();
+}
+
+
+function createLifeEmergency(){
+
+    game.currentCard={
+        title:"🚿 Tubo de agua roto",
+        description:"Una reparación inesperada aparece este mes.",
+        cost:100,
+        type:"emergencyLife"
+    };
+
+    render();
+}
+
+
+function budgetMiniGame(){
+
+    game.savings+=50;
+    game.happiness+=5;
+    showMicro(
+    "🎮 Mini-juego Presupuesto: aprendiste a equilibrar gastos y ahorro."
+    );
+
+    clampLifeStats();
+
+    setTimeout(()=>{
+        nextDay();
+    },1500);
+}
+
+
+function showLifeDiary(){
+
+    let mood="🙂 Semana equilibrada";
+
+    if(game.energy<30)
+        mood="😴 Necesitas descansar más";
+
+    if(game.social>80)
+        mood="😄 Tu vida social está fuerte";
+
+    game.lifeDiary.push({
+        day:game.day,
+        mood:mood
+    });
+
+    showMicro(
+    "📖 Diario de vida: "+mood+
+    ". Consejo: pequeños hábitos crean grandes cambios."
+    );
+}
+
+
+/* Modificación del avance semanal */
+const originalNextDay = nextDay;
+
+nextDay=function(){
+
+    originalNextDay();
+
+    if([7,14,21,28].includes(game.day)){
+        showLifeDiary();
+    }
+};
+
+
+/* ============================================================
+ CASHFLOW DASH V3 - BALANCE, HUD, BURNOUT AND PROCEDURAL EVENTS
+============================================================ */
+
+Object.assign(game,{
+    bank:1250,
+    savingsFund:850,
+    mentalHealth:80,
+    burnoutDays:0,
+    visitedEvents:[],
+    fixedBills:{
+        rent:false,
+        services:false
+    }
+});
+
+
+function clampStats(){
+
+    game.mentalHealth=Math.max(0,Math.min(100,game.mentalHealth));
+    game.social=Math.max(0,Math.min(100,game.social||60));
+}
+
+
+function updateHUD(){
+
+    let money=Math.max(0,game.bank||game.balance);
+
+    let maxMoney=2000;
+    let percent=Math.min(100,(money/maxMoney)*100);
+
+    let bankBar=document.getElementById("bankBar");
+
+    if(bankBar){
+        bankBar.style.width=percent+"%";
+        bankBar.innerHTML="$"+money;
+        bankBar.className=
+        percent>50?"green":
+        percent>20?"yellow":"red";
+    }
+
+
+    let healthBar=document.getElementById("healthBar");
+
+    if(healthBar){
+
+        healthBar.style.width=
+        game.mentalHealth+"%";
+
+        healthBar.innerHTML=
+        game.mentalHealth+"%";
+
+        healthBar.className=
+        game.mentalHealth>50?
+        "green":
+        game.mentalHealth>20?
+        "yellow":"red";
+    }
+
+
+    let savings=document.getElementById("savingValue");
+
+    if(savings)
+        savings.innerHTML="$"+game.savingsFund;
+
+}
+
+
+function applyMentalChange(value){
+
+    game.mentalHealth+=value;
+
+    if(game.mentalHealth<=0){
+
+        game.mentalHealth=0;
+        game.burnoutDays++;
+
+        if(game.burnoutDays>=3){
+
+            gameOver(
+            "💀 Game Over: El estrés financiero y la falta de descanso provocaron tu colapso definitivo."
+            );
+
+            return false;
+        }
+
+    }else{
+
+        game.burnoutDays=0;
+
+    }
+
+    clampStats();
+    updateHUD();
+
+    return true;
+}
+
+
+/* CALENDARIO ESTRICTO */
+
+function applyFixedCalendar(){
+
+    if(game.day===1 && !game.fixedBills.rent){
+
+        game.balance-=400;
+        game.fixedBills.rent=true;
+
+        showMicro(
+        "🏠 Alquiler mensual pagado"
+        );
+    }
+
+
+    if(game.day===15 && !game.fixedBills.services){
+
+        game.balance-=120;
+        game.fixedBills.services=true;
+
+        showMicro(
+        "💡 Luz e Internet pagados"
+        );
+    }
+
+
+    if(game.day===1 || game.day===15){
+
+        game.balance+=800;
+
+        showMicro(
+        "💰 Recibiste tu ingreso"
+        );
+    }
+
+}
+
+
+/* SELECTOR DE RITMO */
+
+function proceduralDaySelector(){
+
+    let chance=Math.random();
+
+
+    if(chance<=0.50)
+        return "routine";
+
+
+    if(chance<=0.80)
+        return "social";
+
+
+    return "emergency";
+
+}
+
+
+
+function generateProceduralDay(){
+
+    applyFixedCalendar();
+
+
+    let type=proceduralDaySelector();
+
+
+    if(type==="routine"){
+
+        applyMentalChange(5);
+
+        showMicro(
+        "🌱 Día tranquilo en la universidad, preparaste comida en casa."
+        );
+
+        return;
+    }
+
+
+    if(type==="social"){
+
+        generateSocialEvent();
+        return;
+    }
+
+
+    generateEmergencyEvent();
+
+}
+
+
+/* POOL DE EVENTOS */
+
+const eventPool=[
+
+{
+title:"🎂 Cumpleaños de un amigo",
+options:[
+["Regalo caro",-60,30,15],
+["Regalo creativo",-10,25,10],
+["No asistir",0,-15,-3]
+]
+},
+
+{
+title:"📚 Comprar libros universitarios",
+options:[
+["Comprar nuevos",-100,5,10],
+["Buscar usados",-40,10,5],
+["Esperar",0,-5,-2]
+]
+},
+
+{
+title:"🎮 Salida con amigos",
+options:[
+["Salir sin limitar gastos",-80,35,15],
+["Plan económico",-25,20,10],
+["Quedarte descansando",0,-8,10]
+]
+}
+
+];
+
+
+function generateSocialEvent(){
+
+    let event=
+    eventPool[
+    Math.floor(Math.random()*eventPool.length)
+    ];
+
+    game.currentEvent=event;
+
+    renderLifeEvent(event);
+
+}
+
+
+
+function chooseLifeOption(option){
+
+    game.balance+=option[1];
+
+    game.social+=option[2];
+
+    applyMentalChange(option[3]);
+
+    updateHUD();
+
+    nextDay();
+
+}
+
+
+/* EMERGENCIAS */
+
+const emergencies=[
+
+"🚲 Se rompió tu bicicleta",
+"💻 Tu computadora necesita reparación",
+"📱 Tu celular dejó de funcionar",
+"🎓 Curso online con descuento limitado",
+"👟 Necesitas reparar tus zapatos"
+
+];
+
+
+function generateEmergencyEvent(){
+
+    let text=
+    emergencies[
+    Math.floor(Math.random()*emergencies.length)
+    ];
+
+    showMicro(text);
+
+}
+
+
+/* VICTORIA */
+
+function checkFinalGame(){
+
+    if(game.day>=30){
+
+        if(game.balance>=0 &&
+        game.savingsFund>=0 &&
+        game.mentalHealth>0){
+
+            victoryScreen();
+
+        }
+
+    }
+
+
+    if(game.balance<=0 &&
+       game.day<30){
+
+        gameOver(
+        "💸 Bancarrota: te quedaste sin dinero antes de terminar el mes."
+        );
+    }
+
+}
+
+
+</script>
+
+
+<script>
+/* ==========================================================
+ CASHFLOW DASH V2 - PROCEDURAL LIFE EVENT SYSTEM
+ Calendario + Cooldowns + Eventos narrativos
+========================================================== */
+
+const eventSystem={
+ fixedEvents:{
+  rent:{day:1,used:false,cost:450,title:"🏠 Alquiler mensual"},
+  salary1:{day:1,used:false,value:800,title:"💰 Salario"},
+  bills:{day:15,used:false,cost:120,title:"💡 Facturas del hogar"},
+  salary2:{day:15,used:false,value:400,title:"💵 Segundo ingreso"}
+ },
+
+ randomPool:[
+ {id:"birthday",title:"🎂 Cumpleaños de un amigo",options:[
+  {t:"Regalo costoso",money:-60,social:30},
+  {t:"Regalo creativo",money:-10,social:25,creative:10},
+  {t:"No asistir",money:0,social:-15,energy:5}
+ ]},
+ {id:"course",title:"📚 Curso online",options:[
+  {t:"Comprar curso",money:-100,energy:10},
+  {t:"Buscar recursos gratis",money:0,energy:5},
+  {t:"Ignorarlo",money:0}
+ ]},
+ {id:"friends",title:"🎮 Salida con amigos",options:[
+  {t:"Salir y disfrutar",money:-50,social:25},
+  {t:"Plan económico",money:-15,social:15},
+  {t:"Quedarte en casa",energy:10,social:-10}
+ ]}
+ ],
+ emergencyPool:[
+ {title:"🚿 Tubo roto",money:-100,energy:-10},
+ {title:"📱 Teléfono dañado",money:-180,energy:-5},
+ {title:"🩺 Consulta inesperada",money:-80,energy:-15}
+ ]
+};
+
+let lifeState={social:60,energy:70,creativity:50,savings:0};
+
+function resetMonthlyCooldowns(){
+ Object.values(eventSystem.fixedEvents).forEach(e=>e.used=false);
+}
+
+function getFixedEvent(day){
+ for(let key in eventSystem.fixedEvents){
+  let e=eventSystem.fixedEvents[key];
+  if(e.day===day && !e.used){
+   e.used=true;
+   return e;
+  }
+ }
+ return null;
+}
+
+function selectProceduralDay(){
+ let fixed=getFixedEvent(game.day);
+ if(fixed) return {type:"fixed",event:fixed};
+
+ let r=Math.random();
+ if(r<0.40) return {type:"routine"};
+ if(r<0.80) return {type:"choice"};
+ return {type:"emergency"};
+}
+
+function generateProceduralDay(){
+ let day=selectProceduralDay();
+
+ switch(day.type){
+  case "fixed": showFixedEvent(day.event);break;
+  case "routine": showRoutineDay();break;
+  case "choice": showChoiceEvent();break;
+  case "emergency": showEmergencyEvent();break;
+ }
+}
+
+function showFixedEvent(e){
+ if(e.cost){game.balance-=e.cost;}
+ if(e.value){game.balance+=e.value;}
+ showMicro(e.title);
+ render();
+}
+
+function showRoutineDay(){
+ lifeState.energy+=5;
+ game.happiness+=3;
+ showMicro("🌱 Día tranquilo: clases, trabajo y una rutina saludable.");
+ updateEnvironment();
+}
+
+function showChoiceEvent(){
+ let e=eventSystem.randomPool[Math.floor(Math.random()*eventSystem.randomPool.length)];
+ let card=document.getElementById('card');
+ if(!card)return;
+ card.innerHTML=`<h2>${e.title}</h2>`+
+ e.options.map((o,i)=>`<button onclick="applyChoice(${JSON.stringify(o).replace(/"/g,'&quot;')})">${o.t}</button>`).join('');
+}
+
+function applyChoice(o){
+ game.balance+=o.money||0;
+ lifeState.social+=o.social||0;
+ lifeState.energy+=o.energy||0;
+ lifeState.creativity+=o.creative||0;
+ updateEnvironment();
+ render();
+}
+
+function showEmergencyEvent(){
+ let e=eventSystem.emergencyPool[Math.floor(Math.random()*eventSystem.emergencyPool.length)];
+ game.balance+=e.money;
+ lifeState.energy+=e.energy;
+ showMicro(e.title+" ocurrió hoy.");
+ render();
+}
+
+function updateEnvironment(){
+ let room=document.body;
+ if(lifeState.social<25) room.classList.add('lonely-room');
+ if(game.savings>1000) room.classList.add('rich-room');
+}
+
+function weekendMiniGame(){
+ showMicro("🛒 Mini mercado: elegiste productos con mejor precio por unidad.");
+ game.savings+=50;
+}
+
+</script>
+</body>
+</html>

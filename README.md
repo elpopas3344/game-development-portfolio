@@ -1,7 +1,4 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/elpopas3344/game-development-portfolio/refs/heads/main/assets/portada.jfif" alt="Banner Portafolio Team Alpha" width="100%">
-</div>
-<div align="center">
 
 # 🎮 Portafolio de Game Development: Team Alpha
 ### Alvaro Zadok Castro Henao | Jose Ignacio Villarroel Castro
