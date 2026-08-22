@@ -1,62 +1,72 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/elpopas3344/game-development-portfolio/refs/heads/main/assets/portada.jfif" alt="Banner Portafolio Team Alpha" width="100%">
 
-# 🎮 Portafolio de Game Development: Team Alpha
-### Alvaro Zadok Castro Henao | Jose Ignacio Villarroel Castro
+  <img src="https://raw.githubusercontent.com/elpopas3344/game-development-portfolio/refs/heads/main/assets/Banner.png" alt="Banner Portafolio Team Alpha" width="100%">
 
-[![GitHub Status](https://img.shields.io/badge/Status-Activo-success?style=flat-square&logo=github)](https://github.com)
-[![Tecnologías](https://img.shields.io/badge/Stack-HTML5%20%7C%20CSS3%20%7C%20JS-blue?style=flat-square&logo=javascript)](https://github.com)
-[![Ubicación](https://img.shields.io/badge/Base-Bolivia-red?style=flat-square)](https://github.com)
+  # 🚀 Team Alpha | Game Development Portfolio
+  ### *Ingeniería de Software & Diseño de Videojuegos*
 
-*Un espacio dedicado a la convergencia entre el desarrollo de software y la ingeniería de videojuegos.*
+  **Alvaro Zadok Castro Henao** • **Jose Ignacio Villarroel Castro**
+
+  <p align="center">
+    <img src="https://img.shields.io/badge/Status-Activo-success?style=for-the-badge&logo=github" alt="Status">
+    <img src="https://img.shields.io/badge/Stack-HTML5%20%7C%20CSS3%20%7C%20JS-blue?style=for-the-badge&logo=javascript" alt="Stack">
+    <img src="https://img.shields.io/badge/Base-Bolivia-red?style=for-the-badge" alt="Location">
+  </p>
 
 </div>
 
 ---
 
-## 👥 Sobre Nosotros
+## 👥 ¿Quiénes Somos?
 
-Somos **Alvaro Zadok Castro Henao** y **Jose Ignacio Villarroel Castro**, estudiantes de Ingeniería enfocados en el desarrollo de experiencias interactivas. Este portafolio refleja nuestra evolución técnica, creatividad y capacidad resolutiva al enfrentar retos de diseño de juegos. 
-
-Nuestro objetivo es explorar las posibilidades del desarrollo web y la lógica de programación para construir mundos dinámicos, aplicando estándares profesionales en cada fase de nuestros proyectos.
+Somos **Alvaro Zadok Castro Henao** y **Jose Ignacio Villarroel Castro**, estudiantes de Ingeniería apasionados por fusionar la lógica de programación con la creación de experiencias interactivas inmersivas. Este portafolio documenta nuestra evolución técnica, metodologías de trabajo y la creatividad aplicada en el diseño de prototipos jugables bajo estándares profesionales.
 
 ---
 
-## 🛠️ Stack Tecnológico
+## 🛠️ Stack Tecnológico & Arquitectura
 
-La construcción de nuestros prototipos se basa en una arquitectura web ligera pero escalable:
+Nuestros prototipos están construidos bajo una arquitectura web modular, ligera y escalable:
 
-* **Core:** HTML5, CSS3 y JavaScript moderno (ES6+).
-* **Gestión de Lógica:** Implementación de algoritmos de juego y control de estados.
-* **Apoyo Creativo:** Integración de IA para optimización de código y diseño de mecánicas.
-* **Flujo de Trabajo:** Control de versiones con Git y despliegue continuo mediante GitHub.
-
----
-
-## 🕹️ Galería de Prototipos y Videojuegos
-
-A continuación se presenta la selección de prototipos funcionales desarrollados durante la asignatura:
-
-| Carpeta | Proyecto / Juego | Descripción | Enlace |
-| :--- | :--- | :--- | :--- |
-| 📂 | **Cashflow Dash** | Prototipo de gestión y velocidad. | [Explorar](./juegos/CASHFLOW%20DASH/) |
-| 📂 | **Mens In Black** | Juego de acción y disparos temático. | [Explorar](./juegos/MensInBlack/) |
-| 📂 | **Nutri Aventura** | Videojuego educativo y de exploración. | [Explorar](./juegos/NutriAventura/) |
-| 📂 | **Storytelling** | Experiencia interactiva basada en narrativa. | [Explorar](./juegos/Storytelling/) |
-| 📂 | **Dorian Quest** | Aventura gráfica y de exploración de calabozos. | [Explorar](./juegos/dorianquest/) |
-
-> *Nota: Cada carpeta de juego contendrá su respectivo archivo README.md con la documentación detallada, controles e instrucciones específicas.*
+* ⚡ **Core Development:** HTML5 Canvas, CSS3 Avanzado y JavaScript moderno (ES6+).
+* 🕹️ **Game Loops & State Management:** Control de bucles de renderizado (`requestAnimationFrame`) y gestión de estados de juego.
+* 🤖 **Ingeniería Asistida (AI-Driven):** Integración estratégica de Inteligencia Artificial para optimización de algoritmos, refactorización de código y soporte en diseño de mecánicas.
+* 🔄 **Control de Versiones:** Git, flujos de trabajo colaborativos y despliegue continuo mediante GitHub.
 
 ---
 
-## 🎯 Nuestra Visión
-Más que solo escribir código, buscamos:
-1. **Comunicar:** Hacer que nuestras mecánicas sean intuitivas para el usuario.
-2. **Estructurar:** Mantener un código limpio y modular (Clean Code).
-3. **Evolucionar:** Aprender de cada iteración para mejorar el rendimiento en futuras versiones.
+## 🕹️ Galería de Prototipos
+
+Explora los proyectos funcionales desarrollados a lo largo de la asignatura. Cada carpeta contiene su respectiva documentación técnica, controles y requerimientos específicos:
+
+| Icono | Proyecto / Juego | Descripción Breve | Acceso Directo |
+| :---: | :--- | :--- | :---: |
+| 💸 | **Cashflow Dash** | Prototipo web enfocado en la gestión dinámica de recursos y velocidad de respuesta. | [📁 Ver Código](./juegos/CASHFLOW%20DASH/) |
+| 🕶️ | **Mens In Black** | Juego arcade de acción y disparos con temática de ciencia ficción. | [📁 Ver Código](./juegos/MensInBlack/) |
+| 🍎 | **Nutri Aventura** | Experiencia interactiva de carácter educativo y toma de decisiones. | [📁 Ver Código](./juegos/NutriAventura/) |
+| 📖 | **Storytelling** | Novela gráfica interactiva basada en narrativa y árboles de decisiones. | [📁 Ver Código](./juegos/Storytelling/) |
+| 🛡️ | **Dorian Quest** | Aventura de exploración de mazmorras y resolución de retos lógicos. | [📁 Ver Código](./juegos/dorianquest/) |
+
+---
+
+## 🎯 Nuestra Visión de Ingeniería
+
+Más allá de escribir líneas de código, nuestra filosofía de desarrollo se rige por tres pilares fundamentales:
+
+1. **Comunicación Visual e Interactiva:** Hacer que cada mecánica sea intuitiva, responsiva y clara para el usuario.
+2. **Clean Code & Estructura:** Mantener arquitecturas de carpetas limpias, código modular y buenas prácticas de documentación.
+3. **Iteración Constante:** Evaluar el rendimiento, corregir bugs y evolucionar los prototipos basándonos en pruebas continuas.
 
 ---
 
 <div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=elpopas3344&show_icons=true&theme=radical" alt="GitHub Stats" />
+
+  ### 📊 Estadísticas del Repositorio
+  <br>
+  
+  <img src="https://github-readme-stats.vercel.app/api?username=elpopas3344&show_icons=true&theme=radical&hide_border=true&bg_color=161b22" alt="GitHub Stats" />
+
+  <br><br>
+  
+  *Desarrollado con dedicación por **Team Alpha** (Bolivia 🇧🇴).*
+
 </div>
