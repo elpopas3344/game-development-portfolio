@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriAventura: El Reto del Plato Sano</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #74b9ff, #dfe6e9);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #2d3436;
+        }
+        .game-container {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            width: 400px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 22px;
+            color: #0984e3;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            font-size: 13px;
+            color: #636e72;
+            margin-bottom: 20px;
+        }
+        .hud {
+            display: flex;
+            justify-content: space-between;
+            background: #f1f2f6;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .item-box {
+            background: #dfe6e9;
+            height: 110px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            border: 2px dashed #b2bec3;
+        }
+        .item-emoji {
+            font-size: 40px;
+            margin-bottom: 5px;
+        }
+        .item-name {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .buttons-container {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-choice {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            transition: transform 0.1s ease, opacity 0.2s;
+        }
+        .btn-choice:active {
+            transform: scale(0.96);
+        }
+        .btn-healthy {
+            background-color: #00b894;
+        }
+        .btn-healthy:hover {
+            background-color: #00a884;
+        }
+        .btn-junk {
+            background-color: #d63031;
+        }
+        .btn-junk:hover {
+            background-color: #c52222;
+        }
+        .screen {
+            display: none;
+        }
+        .active-screen {
+            display: block;
+        }
+        .btn-restart {
+            background-color: #0984e3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        .btn-restart:hover {
+            background-color: #0773c5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <!-- Pantalla de Juego -->
+        <div id="game-screen" class="screen active-screen">
+            <h1>NutriAventura</h1>
+            <div class="subtitle">¡Clasifica correctamente los alimentos!</div>
+            
+            <div class="hud">
+                <div>Puntos: <span id="score">0</span>/100</div>
+                <div>Vidas: <span id="lives">❤️❤️❤️</span></div>
+                <div>Tiempo: <span id="timer">30</span>s</div>
+            </div>
+
+            <div class="item-box">
+                <div id="item-emoji" class="item-emoji">🍎</div>
+                <div id="item-name" class="item-name">Manzana</div>
+            </div>
+
+            <div class="buttons-container">
+                <button class="btn-choice btn-healthy" onclick="classify(true)">🥗 Saludable</button>
+                <button class="btn-choice btn-junk" onclick="classify(false)">🍔 Chatarra</button>
+            </div>
+        </div>
+
+        <!-- Pantalla de Fin de Partida (Victoria / Derrota) -->
+        <div id="end-screen" class="screen">
+            <h1 id="end-title">¡Juego Terminado!</h1>
+            <p id="end-message" style="margin: 20px 0; font-size: 15px;"></p>
+            <button class="btn-restart" onclick="startGame()">Jugar de Nuevo</button>
+        </div>
+    </div>
+
+    <script>
+        const items = [
+            { name: "Manzana", emoji: "🍎", healthy: true },
+            { name: "Hamburguesa", emoji: "🍔", healthy: false },
+            { name: "Brócoli", emoji: "🥦", healthy: true },
+            { name: "Refresco", emoji: "🥤", healthy: false },
+            { name: "Agua", emoji: "💧", healthy: true },
+            { name: "Papas Fritas", emoji: "🍟", healthy: false },
+            { name: "Zanahoria", emoji: "🥕", healthy: true },
+            { name: "Dona", emoji: "🍩", healthy: false },
+            { name: "Plátano", emoji: "🍌", healthy: true },
+            { name: "Pizza", emoji: "🍕", healthy: false }
+        ];
+
+        let score = 0;
+        let lives = 3;
+        let timeLeft = 30;
+        let currentItem = {};
+        let timerInterval;
+
+        const scoreEl = document.getElementById("score");
+        const livesEl = document.getElementById("lives");
+        const timerEl = document.getElementById("timer");
+        const itemEmojiEl = document.getElementById("item-emoji");
+        const itemNameEl = document.getElementById("item-name");
+        
+        const gameScreen = document.getElementById("game-screen");
+        const endScreen = document.getElementById("end-screen");
+        const endTitle = document.getElementById("end-title");
+        const endMessage = document.getElementById("end-message");
+
+        function startGame() {
+            score = 0;
+            lives = 3;
+            timeLeft = 30;
+            scoreEl.textContent = score;
+            updateLivesDisplay();
+            timerEl.textContent = timeLeft;
+
+            gameScreen.classList.add("active-screen");
+            gameScreen.style.display = "block";
+            endScreen.classList.remove("active-screen");
+            endScreen.style.display = "none";
+
+            nextItem();
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerEl.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    endGame(false, "¡Se acabó el tiempo!");
+                }
+            }, 1000);
+        }
+
+        function nextItem() {
+            const randomIndex = Math.floor(Math.random() * items.length);
+            currentItem = items[randomIndex];
+            itemEmojiEl.textContent = currentItem.emoji;
+            itemNameEl.textContent = currentItem.name;
+        }
+
+        function classify(playerChoice) {
+            if (playerChoice === currentItem.healthy) {
+                score += 10;
+                scoreEl.textContent = score;
+                if (score >= 100) {
+                    endGame(true, "¡Felicitaciones! Has completado el reto y demostrado ser un experto en nutrición.");
+                    return;
+                }
+            } else {
+                lives--;
+                updateLivesDisplay();
+                if (lives <= 0) {
+                    endGame(false, "¡Te quedaste sin vidas! Inténtalo de nuevo para mejorar tu selección.");
+                    return;
+                }
+            }
+            nextItem();
+        }
+
+        function updateLivesDisplay() {
+            livesEl.textContent = "❤️".repeat(lives);
+        }
+
+        function endGame(isVictory, message) {
+            clearInterval(timerInterval);
+            gameScreen.style.display = "none";
+            endScreen.style.display = "block";
+            endTitle.textContent = isVictory ? "🎉 ¡Victoria!" : "❌ ¡Derrota!";
+            endMessage.textContent = message + ` Puntaje final: ${score} puntos.`;
+        }
+
+        // Iniciar el juego automáticamente al cargar
+        startGame();
+    </script>
+</body>
+</html>

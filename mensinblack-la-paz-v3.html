@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>MensInBlack La Paz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purple-deep:#1c0f4a; --purple:#3a1e8c; --violet:#7c4dff;
+    --gold:#f4b93f; --gold-deep:#d69420;
+    --water:#33b8e6; --water-deep:#0f7fb0;
+    --paper:#faf5ea; --danger:#e14b4b;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;height:100%;background:var(--purple-deep);font-family:'IBM Plex Mono',monospace;color:var(--paper);}
+  .stage{position:relative;width:100%;min-height:100%;
+    background:radial-gradient(circle at 12% 8%, rgba(124,77,255,0.35), transparent 40%),
+      radial-gradient(circle at 90% 90%, rgba(244,185,63,0.12), transparent 45%), var(--purple-deep);
+    display:flex;flex-direction:column;align-items:center;padding:22px 14px 40px;overflow-x:hidden;}
+  h1,h2,h3{font-family:'Space Grotesk',sans-serif;margin:0;}
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .brand .dot{width:10px;height:10px;background:var(--gold);border-radius:2px;transform:rotate(45deg);}
+  .brand-text{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;}
+  .brand-text span{color:var(--gold);}
+  .brand-sub{font-size:10px;letter-spacing:3px;color:#b9a6f5;text-transform:uppercase;margin-top:-4px;}
+  .panel{width:100%;max-width:560px;background:linear-gradient(180deg,#241259,#160a3d);
+    border:1px solid #4b2fa0;border-radius:18px;padding:26px 24px;box-shadow:0 20px 60px rgba(0,0,0,0.45);}
+  .agent-row{display:flex;gap:16px;align-items:center;margin-bottom:20px;}
+  .avatar{width:74px;height:74px;border-radius:50%;flex-shrink:0;
+    background:radial-gradient(circle at 35% 30%, #6d4dcf, #2a1666);
+    border:3px solid var(--gold);display:flex;align-items:center;justify-content:center;
+    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:28px;color:var(--gold);}
+  .agent-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;}
+  .agent-meta{font-size:11px;color:#c6b8f0;margin-top:3px;line-height:1.5;}
+  .quote{font-family:'Space Grotesk',sans-serif;font-style:italic;font-size:14px;line-height:1.5;
+    background:rgba(124,77,255,0.12);border-left:3px solid var(--gold);padding:12px 14px;border-radius:6px;
+    color:#ecdfff;margin-bottom:18px;}
+  .mission{font-size:12.5px;line-height:1.7;color:#d8cdf5;margin-bottom:22px;}
+  .mission b{color:var(--gold);}
+  .btn{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;letter-spacing:0.5px;
+    background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#221000;
+    border:none;border-radius:10px;padding:13px 20px;cursor:pointer;width:100%;
+    box-shadow:0 6px 0 #9c6c0f, 0 10px 18px rgba(0,0,0,0.35);}
+  .btn:active{transform:translateY(4px);box-shadow:0 2px 0 #9c6c0f;}
+  .btn.secondary{background:linear-gradient(180deg,#4a2fb0,#2c1878);color:#fff;
+    box-shadow:0 6px 0 #1c0f52, 0 10px 18px rgba(0,0,0,0.35);}
+  .level-grid{display:flex;gap:10px;margin-bottom:20px;}
+  .level-pill{flex:1;background:rgba(124,77,255,0.15);border:1px solid #4b2fa0;border-radius:10px;
+    padding:10px 6px;text-align:center;font-size:11px;color:#c6b8f0;}
+  .level-pill.locked{opacity:0.4;}
+  .level-pill .num{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;color:var(--gold);}
+  .hud{width:100%;max-width:860px;display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:10px;gap:10px;flex-wrap:wrap;}
+  .stat{background:rgba(20,10,50,0.75);border:1px solid #4b2fa0;border-radius:10px;
+    padding:8px 14px;text-align:center;min-width:88px;}
+  .stat .label{font-size:9px;letter-spacing:1.5px;color:#b9a6f5;text-transform:uppercase;}
+  .stat .value{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;color:var(--gold);}
+  .stat.time .value{color:var(--water);}
+  .stat.danger .value{color:var(--danger);}
+  .game-wrap{position:relative;width:100%;max-width:860px;border-radius:16px;overflow:hidden;
+    border:2px solid #4b2fa0;box-shadow:0 20px 50px rgba(0,0,0,0.5);cursor:crosshair;}
+  canvas{display:block;width:100%;height:auto;position:absolute;top:0;left:0;}
+  .tag{position:absolute;top:8px;left:8px;background:rgba(20,10,50,0.7);z-index:5;
+    font-size:10px;padding:4px 8px;border-radius:6px;color:var(--gold);letter-spacing:1px;}
+  .hint{max-width:860px;width:100%;font-size:11px;color:#b9a6f5;margin-top:10px;text-align:center;line-height:1.6;}
+  .hint b{color:var(--gold);}
+  .end-panel{width:100%;max-width:520px;background:linear-gradient(180deg,#241259,#160a3d);
+    border:1px solid #4b2fa0;border-radius:18px;padding:30px 26px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.45);}
+  .badge{width:120px;height:120px;border-radius:50%;margin:14px auto 18px;
+    background:radial-gradient(circle at 35% 30%,#ffe08a,var(--gold-deep));
+    border:5px solid var(--violet);display:flex;align-items:center;justify-content:center;
+    font-size:44px;box-shadow:0 10px 30px rgba(244,185,63,0.4);}
+  .badge.fail{background:radial-gradient(circle at 35% 30%,#f29a9a,#a83030);border-color:#5a1c1c;}
+  .victory-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:26px;color:var(--gold);}
+  .fail .victory-title{color:var(--danger);}
+  .score-row{display:flex;justify-content:space-between;background:rgba(124,77,255,0.15);
+    border-radius:10px;padding:12px 16px;margin:18px 0 8px;font-size:13px;}
+  .score-row b{color:#fff;font-family:'Space Grotesk',sans-serif;}
+  .eco-line{font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--water);font-size:15px;margin:10px 0 20px;}
+  .meter-bar{width:100%;height:10px;background:#160a3d;border-radius:6px;overflow:hidden;margin:14px 0;border:1px solid #4b2fa0;}
+  .meter-fill{height:100%;background:linear-gradient(90deg,var(--water-deep),var(--water));}
+  .footer-credit{margin-top:26px;font-size:9.5px;color:#8a78c0;letter-spacing:1px;text-align:center;}
+</style>
+</head>
+<body>
+<div class="stage" id="stage"></div>
+<script>
+const stage = document.getElementById('stage');
+
+const LEVELS = [
+  { name:'Barrio Sur', drops:26, time:55, valves:2, winPct:0.75 },
+  { name:'Zona Central', drops:32, time:60, valves:3, winPct:0.80 },
+  { name:'Ladera Alta', drops:40, time:70, valves:4, winPct:0.85 },
+];
+let unlocked = 1;
+let currentLevel = 0;
+
+const GAME = { cols:150, rows:88, cell:5.6 };
+const TILE = { AIR:0, DIRT:1, WALL:2, TUB:3, DRAIN:4 };
+
+let grid, bgCanvas, bgCtx, waterCanvas, waterCtx, loopRunning=false, lastFrame=0;
+let waterCells=[], spawned=0, collected=0, lost=0, timeLeft=0;
+let spawnTimer=null, tickTimer=null, dragging=false;
+let valves=[], tubRect, sourcePoint, dirtNoise=null, cfg=null;
+
+function renderStart(){
+  stage.innerHTML = `
+    <div class="brand"><div class="dot"></div><div>
+      <div class="brand-text">MensIn<span>Black</span></div>
+      <div class="brand-sub">La Paz &middot; Unidad Eco-Agentes</div></div></div>
+    <div class="panel">
+      <div class="agent-row">
+        <div class="avatar">R</div>
+        <div><div class="agent-name">Agente Rodmy</div>
+          <div class="agent-meta">21 a&ntilde;os &middot; Estudiante universitario &middot; La Paz<br/>Audif&oacute;nos puestos, celular en mano.</div></div>
+      </div>
+      <div class="quote">"A m&iacute; no me des discursos sobre el planeta; dime qu&eacute; puedo hacer f&aacute;cil en mi d&iacute;a a d&iacute;a y que de verdad valga la pena."</div>
+      <div class="mission"><b>MISI&Oacute;N:</b> Rodmy quiere ba&ntilde;arse. Cava con el cursor y activa las v&aacute;lvulas ON/OFF
+      para guiar el agua desde la tuber&iacute;a hasta su tina, antes de que se pierda o se acabe el tiempo.</div>
+      <div class="level-grid">
+        ${LEVELS.map((l,i)=>`
+          <div class="level-pill ${i<unlocked?'':'locked'}" ${i<unlocked?`onclick="launchLevel(${i})" style="cursor:pointer;"`:''}>
+            <div class="num">${i+1}</div>${l.name}
+          </div>`).join('')}
+      </div>
+      <button class="btn" onclick="launchLevel(${unlocked-1})">▶ ${unlocked>1?'CONTINUAR':'INICIAR MISI\u00d3N'}</button>
+    </div>
+    <div class="hint">${LEVELS.length} niveles &middot; <b>Puzzle de F&iacute;sica</b></div>`;
+}
+
+function launchLevel(i){ currentLevel=i; startLevel(); }
+
+function buildLevel(){
+  cfg = LEVELS[currentLevel];
+  const {cols,rows}=GAME;
+  grid = new Uint8Array(cols*rows);
+  const idx=(x,y)=>y*cols+x;
+  for(let y=0;y<rows;y++) for(let x=0;x<cols;x++)
+    grid[idx(x,y)] = (y < rows*0.15) ? TILE.AIR : TILE.DIRT;
+
+  sourcePoint = {x:Math.floor(cols*0.09), y:Math.floor(rows*0.16)};
+  for(let y=0;y<sourcePoint.y+4;y++) for(let x=sourcePoint.x-5;x<sourcePoint.x+6;x++)
+    if(x>=0&&x<cols) grid[idx(x,y)] = TILE.AIR;
+
+  const tw=22, th=17, tx=cols-tw-6, ty=rows-th-3;
+  tubRect = {x:tx,y:ty,w:tw,h:th};
+  for(let y=ty;y<ty+th;y++) for(let x=tx;x<tx+tw;x++) grid[idx(x,y)] = TILE.TUB;
+  for(let y=ty-4;y<ty;y++) for(let x=tx+5;x<tx+tw-5;x++) grid[idx(x,y)] = TILE.AIR;
+
+  for(let x=0;x<12;x++) grid[idx(x, rows-1)] = TILE.DRAIN;
+  for(let x=Math.floor(cols*0.42);x<Math.floor(cols*0.42)+12;x++) grid[idx(x, rows-1)] = TILE.DRAIN;
+  if(cfg.valves>=3){
+    for(let x=Math.floor(cols*0.62);x<Math.floor(cols*0.62)+10;x++) grid[idx(x, rows-1)] = TILE.DRAIN;
+  }
+
+  let cx=sourcePoint.x, cy=sourcePoint.y+3;
+  const wiggle = 0.3 + currentLevel*0.08;
+  for(let i=0;i<110;i++){
+    for(let dx=-2;dx<=2;dx++){
+      const xx=cx+dx, yy=cy;
+      if(xx>=0&&xx<cols&&yy>=0&&yy<rows && grid[idx(xx,yy)]===TILE.DIRT) grid[idx(xx,yy)]=TILE.AIR;
+    }
+    cx += (Math.random()<0.7)?1:0;
+    cy += (Math.random()<wiggle)?1:(Math.random()<wiggle*0.7?-1:0);
+    cy = Math.max(sourcePoint.y+2, Math.min(rows-20, cy));
+    if(cx>tx-8) break;
+  }
+
+  valves=[];
+  const vPositions = [
+    {x:0.28, y:0.34}, {x:0.50, y:0.55}, {x:0.72, y:0.40}, {x:0.36, y:0.68}
+  ];
+  for(let i=0;i<cfg.valves;i++){
+    const p=vPositions[i];
+    valves.push({x:Math.floor(cols*p.x), y:Math.floor(rows*p.y), size:4, open:false});
+  }
+  valves.forEach(v=>{
+    for(let y=v.y-v.size;y<=v.y+v.size;y++) for(let x=v.x-v.size;x<=v.x+v.size;x++)
+      if(x>=0&&x<cols&&y>=0&&y<rows) grid[idx(x,y)] = TILE.WALL;
+  });
+
+  waterCells=[]; spawned=0; collected=0; lost=0; timeLeft=cfg.time;
+
+  const nc = document.createElement('canvas');
+  nc.width=cols; nc.height=rows;
+  const nctx = nc.getContext('2d');
+  const img = nctx.createImageData(cols,rows);
+  for(let i=0;i<cols*rows;i++){
+    const v = 200+Math.floor(Math.random()*40)-20;
+    img.data[i*4]=v; img.data[i*4+1]=v; img.data[i*4+2]=v; img.data[i*4+3]=255;
+  }
+  nctx.putImageData(img,0,0);
+  dirtNoise = nc;
+}
+
+function startLevel(){
+  buildLevel();
+  stage.innerHTML = `
+    <div class="brand"><div class="dot"></div><div>
+      <div class="brand-text">MensIn<span>Black</span></div>
+      <div class="brand-sub">Nivel ${currentLevel+1} &middot; ${cfg.name}</div></div></div>
+    <div class="hud">
+      <div class="stat time"><div class="label">Tiempo</div><div class="value" id="hud-time">${timeLeft}s</div></div>
+      <div class="stat"><div class="label">Tina</div><div class="value" id="hud-pct">0%</div></div>
+      <div class="stat danger"><div class="label">Perdido</div><div class="value" id="hud-lost">0</div></div>
+      <div class="stat"><div class="label">Meta</div><div class="value">${Math.round(cfg.winPct*100)}%</div></div>
+    </div>
+    <div class="game-wrap" id="gamewrap" style="aspect-ratio:${GAME.cols}/${GAME.rows};">
+      <div class="tag">NIVEL ${currentLevel+1} &middot; ${cfg.name}</div>
+      <canvas id="bg" width="${GAME.cols*GAME.cell}" height="${GAME.rows*GAME.cell}"></canvas>
+      <canvas id="water" width="${GAME.cols*GAME.cell}" height="${GAME.rows*GAME.cell}" style="filter:blur(7px) contrast(28);"></canvas>
+    </div>
+    <div class="hint">Arrastra sobre la <b>tierra</b> para cavar. Haz clic en las <b>v&aacute;lvulas</b> para abrir/cerrar. Llena la tina antes de que el agua se pierda.</div>`;
+
+  bgCanvas=document.getElementById('bg'); bgCtx=bgCanvas.getContext('2d');
+  waterCanvas=document.getElementById('water'); waterCtx=waterCanvas.getContext('2d');
+
+  setupInput();
+  drawTerrain();
+  loopRunning=true; lastFrame=performance.now();
+  requestAnimationFrame(gameLoop);
+
+  spawnTimer=setInterval(()=>{
+    if(spawned<cfg.drops){
+      waterCells.push({x:sourcePoint.x+(Math.random()*3-1.5), y:sourcePoint.y+2});
+      spawned++;
+    } else clearInterval(spawnTimer);
+  }, 800);
+
+  tickTimer=setInterval(()=>{
+    timeLeft--;
+    const t=document.getElementById('hud-time'); if(t) t.textContent=timeLeft+'s';
+    if(timeLeft<=0){ clearInterval(tickTimer); clearInterval(spawnTimer); endLevel(); }
+  },1000);
+}
+
+function setupInput(){
+  const wrap=document.getElementById('gamewrap');
+  function getCell(e){
+    const rect=bgCanvas.getBoundingClientRect();
+    const scaleX=bgCanvas.width/rect.width, scaleY=bgCanvas.height/rect.height;
+    const clientX=e.clientX ?? e.touches?.[0].clientX, clientY=e.clientY ?? e.touches?.[0].clientY;
+    const cx=(clientX-rect.left)*scaleX, cy=(clientY-rect.top)*scaleY;
+    return {x:Math.floor(cx/GAME.cell), y:Math.floor(cy/GAME.cell)};
+  }
+  function dig(gx,gy,r){
+    let changed=false;
+    for(let y=gy-r;y<=gy+r;y++) for(let x=gx-r;x<=gx+r;x++){
+      if(x<0||x>=GAME.cols||y<0||y>=GAME.rows) continue;
+      const i=y*GAME.cols+x;
+      if(grid[i]===TILE.DIRT && (x-gx)**2+(y-gy)**2<=r*r){ grid[i]=TILE.AIR; changed=true; }
+    }
+    if(changed) drawTerrain();
+  }
+  function tryToggleValve(gx,gy){
+    for(const v of valves){
+      if(Math.hypot(v.x-gx,v.y-gy)<=v.size+1.5){
+        v.open=!v.open;
+        for(let y=v.y-v.size;y<=v.y+v.size;y++) for(let x=v.x-v.size;x<=v.x+v.size;x++){
+          if(x<0||x>=GAME.cols||y<0||y>=GAME.rows) continue;
+          const i=y*GAME.cols+x;
+          if(v.open){ if(grid[i]===TILE.WALL) grid[i]=TILE.AIR; }
+          else { if(grid[i]===TILE.AIR) grid[i]=TILE.WALL; }
+        }
+        drawTerrain();
+        return true;
+      }
+    }
+    return false;
+  }
+  function down(e){ e.preventDefault(); const {x,y}=getCell(e); if(tryToggleValve(x,y)) return; dragging=true; dig(x,y,4); }
+  function move(e){ if(!dragging) return; e.preventDefault(); const {x,y}=getCell(e); dig(x,y,4); }
+  function up(){ dragging=false; }
+  wrap.addEventListener('mousedown',down);
+  wrap.addEventListener('mousemove',move);
+  window.addEventListener('mouseup',up);
+  wrap.addEventListener('touchstart',down,{passive:false});
+  wrap.addEventListener('touchmove',move,{passive:false});
+  window.addEventListener('touchend',up);
+}
+
+function drawTerrain(){
+  const {cols,rows,cell}=GAME;
+  bgCtx.clearRect(0,0,bgCanvas.width,bgCanvas.height);
+  const skyH=rows*0.15*cell;
+  const skyGrad=bgCtx.createLinearGradient(0,0,0,skyH);
+  skyGrad.addColorStop(0,'#bfe9f7'); skyGrad.addColorStop(1,'#e3f5fb');
+  bgCtx.fillStyle=skyGrad; bgCtx.fillRect(0,0,bgCanvas.width,skyH);
+
+  bgCtx.save();
+  bgCtx.beginPath();
+  for(let y=0;y<rows;y++){
+    let runStart=-1;
+    for(let x=0;x<=cols;x++){
+      const isDirt = x<cols && grid[y*cols+x]===TILE.DIRT;
+      if(isDirt && runStart===-1) runStart=x;
+      if((!isDirt || x===cols) && runStart!==-1){
+        bgCtx.rect(runStart*cell, y*cell, (x-runStart)*cell, cell+0.6);
+        runStart=-1;
+      }
+    }
+  }
+  bgCtx.clip();
+  const dg=bgCtx.createLinearGradient(0,skyH,0,bgCanvas.height);
+  dg.addColorStop(0,'#a8703f'); dg.addColorStop(0.4,'#8a5a34'); dg.addColorStop(1,'#4a2c14');
+  bgCtx.fillStyle=dg; bgCtx.fillRect(0,0,bgCanvas.width,bgCanvas.height);
+  if(dirtNoise){
+    bgCtx.globalAlpha=0.18; bgCtx.globalCompositeOperation='overlay';
+    bgCtx.drawImage(dirtNoise,0,0,cols,rows,0,0,bgCanvas.width,bgCanvas.height);
+    bgCtx.globalCompositeOperation='source-over'; bgCtx.globalAlpha=1;
+  }
+  bgCtx.restore();
+
+  bgCtx.fillStyle='#7d8aa3';
+  for(let y=0;y<rows;y++) for(let x=0;x<cols;x++)
+    if(grid[y*cols+x]===TILE.WALL) bgCtx.fillRect(x*cell,y*cell,cell,cell);
+
+  drawTub();
+
+  valves.forEach(v=>{
+    const px=v.x*cell, py=v.y*cell, r=(v.size)*cell*0.55;
+    const grad=bgCtx.createRadialGradient(px-r*0.3,py-r*0.3,r*0.1,px,py,r);
+    if(v.open){ grad.addColorStop(0,'#7dfab0'); grad.addColorStop(1,'#0f9a5a'); }
+    else { grad.addColorStop(0,'#ff9d9d'); grad.addColorStop(1,'#c02f2f'); }
+    bgCtx.beginPath(); bgCtx.arc(px,py,r,0,Math.PI*2); bgCtx.fillStyle=grad; bgCtx.fill();
+    bgCtx.lineWidth=3; bgCtx.strokeStyle='#160a3d'; bgCtx.stroke();
+    bgCtx.fillStyle='#160a3d'; bgCtx.font='bold '+Math.round(cell*1.8)+'px sans-serif'; bgCtx.textAlign='center';
+    bgCtx.fillText(v.open?'ON':'OFF', px, py+cell*0.6);
+    bgCtx.textAlign='left';
+  });
+
+  bgCtx.fillStyle='#160a3d';
+  bgCtx.fillRect(sourcePoint.x*cell-16, (sourcePoint.y-3)*cell, 32, cell*3);
+}
+
+function drawTub(){
+  const {cell}=GAME;
+  const tx=tubRect.x*cell, ty=tubRect.y*cell, tw=tubRect.w*cell, th=tubRect.h*cell;
+  const ringR = Math.max(tw,th)*0.62;
+  const ccx = tx+tw*0.5, ccy = ty+th*0.42;
+
+  // outer tiled ring
+  bgCtx.save();
+  bgCtx.beginPath(); bgCtx.arc(ccx,ccy,ringR,0,Math.PI*2); bgCtx.fillStyle='#1f6f6a'; bgCtx.fill();
+  const tiles=18;
+  for(let i=0;i<tiles;i++){
+    const a=(i/tiles)*Math.PI*2;
+    bgCtx.save(); bgCtx.translate(ccx,ccy); bgCtx.rotate(a);
+    bgCtx.fillStyle= i%2===0 ? '#2a8b84':'#20716b';
+    bgCtx.fillRect(ringR*0.86,-ringR*0.06,ringR*0.14,ringR*0.12);
+    bgCtx.restore();
+  }
+  bgCtx.restore();
+
+  // inner room
+  const innerR = ringR*0.82;
+  bgCtx.save();
+  bgCtx.beginPath(); bgCtx.arc(ccx,ccy,innerR,0,Math.PI*2); bgCtx.clip();
+  const roomGrad = bgCtx.createLinearGradient(ccx,ccy-innerR,ccx,ccy+innerR);
+  roomGrad.addColorStop(0,'#f3e3b8'); roomGrad.addColorStop(1,'#e0c98c');
+  bgCtx.fillStyle=roomGrad; bgCtx.fillRect(ccx-innerR,ccy-innerR,innerR*2,innerR*2);
+
+  // bathtub shape
+  const btW=innerR*1.3, btH=innerR*0.62, btX=ccx-btW*0.42, btY=ccy+innerR*0.12;
+  bgCtx.fillStyle='#f5f2e6';
+  bgCtx.beginPath(); bgCtx.roundRect(btX,btY,btW,btH,btH*0.5); bgCtx.fill();
+  bgCtx.strokeStyle='#c9bfa0'; bgCtx.lineWidth=2; bgCtx.stroke();
+
+  // water level inside tub
+  const pct = Math.min(1, collected/(cfg.drops*cfg.winPct));
+  const fillH = btH*0.7*pct;
+  bgCtx.save();
+  bgCtx.beginPath(); bgCtx.roundRect(btX+4,btY+4,btW-8,btH-8,btH*0.45); bgCtx.clip();
+  const wg=bgCtx.createLinearGradient(0,btY+btH-fillH,0,btY+btH);
+  wg.addColorStop(0,'#5fd3f2'); wg.addColorStop(1,'#0f7fb0');
+  bgCtx.fillStyle=wg;
+  bgCtx.fillRect(btX,btY+btH-fillH,btW,fillH+8);
+  bgCtx.restore();
+
+  // shower head
+  bgCtx.strokeStyle='#8a97a8'; bgCtx.lineWidth=4;
+  bgCtx.beginPath(); bgCtx.moveTo(ccx+innerR*0.55, ccy-innerR*0.75); bgCtx.lineTo(ccx+innerR*0.55, ccy-innerR*0.35); bgCtx.stroke();
+  bgCtx.fillStyle='#8a97a8';
+  bgCtx.beginPath(); bgCtx.ellipse(ccx+innerR*0.55, ccy-innerR*0.78, 16,7,0,0,Math.PI*2); bgCtx.fill();
+
+  // character (Rodmy) in tub
+  const charX = btX+btW*0.42, charY = btY+btH*0.35, s=innerR*0.028;
+  bgCtx.fillStyle='#c98a55';
+  bgCtx.beginPath(); bgCtx.arc(charX, charY-8*s, 7*s, 0, Math.PI*2); bgCtx.fill();
+  bgCtx.fillStyle='#160a3d';
+  bgCtx.fillRect(charX-5.5*s, charY-9.5*s, 11*s, 3*s);
+  bgCtx.fillStyle='#3a1e8c';
+  bgCtx.beginPath(); bgCtx.ellipse(charX, charY+2*s, 9*s, 6*s, 0, 0, Math.PI*2); bgCtx.fill();
+  bgCtx.fillStyle='#c98a55';
+  bgCtx.beginPath(); bgCtx.arc(charX-10*s, charY-1*s, 2.6*s,0,Math.PI*2); bgCtx.fill();
+  bgCtx.beginPath(); bgCtx.arc(charX+10*s, charY-1*s, 2.6*s,0,Math.PI*2); bgCtx.fill();
+
+  if(pct>0.1){
+    bgCtx.fillStyle='rgba(255,255,255,0.6)';
+    for(let i=0;i<3;i++){
+      bgCtx.beginPath(); bgCtx.arc(charX-16*s+i*10*s, btY+btH-fillH*0.5-i%2*5*s, 2.4*s,0,Math.PI*2); bgCtx.fill();
+    }
+  }
+  bgCtx.restore();
+
+  bgCtx.strokeStyle='#0d4340'; bgCtx.lineWidth=6;
+  bgCtx.beginPath(); bgCtx.arc(ccx,ccy,ringR,0,Math.PI*2); bgCtx.stroke();
+
+  bgCtx.fillStyle='#f4b93f'; bgCtx.font='bold 12px sans-serif'; bgCtx.textAlign='center';
+  bgCtx.fillText('RODMY', ccx, ty-8);
+  bgCtx.textAlign='left';
+}
+
+function simulateWater(){
+  const {cols,rows}=GAME;
+  const idx=(x,y)=>y*cols+x;
+  waterCells.sort((a,b)=>b.y-a.y);
+  const next=[];
+  for(const w of waterCells){
+    let x=Math.floor(w.x), y=Math.floor(w.y);
+    const below = (y+1<rows) ? grid[idx(x,y+1)] : TILE.DRAIN;
+    if(below===TILE.TUB){ collected++; continue; }
+    if(below===TILE.DRAIN || y+1>=rows){ lost++; continue; }
+    if(below===TILE.AIR){ w.y+=1; next.push(w); continue; }
+    const dir=Math.random()<0.5?-1:1; let moved=false;
+    for(const d of [dir,-dir]){
+      const nx=x+d; if(nx<0||nx>=cols) continue;
+      const t=grid[idx(nx,y+1)];
+      if(t===TILE.TUB){ collected++; moved=true; break; }
+      if(t===TILE.AIR||t===TILE.DRAIN){
+        w.x=nx;
+        if(t===TILE.DRAIN){ lost++; moved=true; break; }
+        w.y=y+1; next.push(w); moved=true; break;
+      }
+    }
+    if(moved) continue;
+    const sdir=Math.random()<0.5?-1:1;
+    for(const d of [sdir,-sdir]){
+      const nx=x+d; if(nx<0||nx>=cols) continue;
+      if(grid[idx(nx,y)]===TILE.AIR){ w.x=nx; next.push(w); moved=true; break; }
+    }
+    if(!moved) next.push(w);
+  }
+  waterCells=next;
+}
+
+function drawWater(){
+  const {cell}=GAME;
+  waterCtx.clearRect(0,0,waterCanvas.width,waterCanvas.height);
+  waterCtx.fillStyle='#33b8e6';
+  for(const w of waterCells){
+    waterCtx.beginPath();
+    waterCtx.arc(w.x*cell+cell/2, w.y*cell+cell/2, cell*1.5, 0, Math.PI*2);
+    waterCtx.fill();
+  }
+}
+
+function gameLoop(ts){
+  if(!loopRunning) return;
+  if(ts-lastFrame>45){
+    simulateWater();
+    drawWater();
+    if(document.getElementById('hud-pct')) drawTub();
+    const pct=Math.min(100, Math.round((collected/(cfg.drops*cfg.winPct))*100));
+    const pctEl=document.getElementById('hud-pct'); if(pctEl) pctEl.textContent=pct+'%';
+    const lostEl=document.getElementById('hud-lost'); if(lostEl) lostEl.textContent=lost;
+    lastFrame=ts;
+    if(spawned>=cfg.drops && waterCells.length===0){
+      loopRunning=false; clearInterval(tickTimer); clearInterval(spawnTimer); endLevel(); return;
+    }
+  }
+  requestAnimationFrame(gameLoop);
+}
+
+function endLevel(){
+  loopRunning=false;
+  const pct=Math.min(100, Math.round((collected/(cfg.drops*cfg.winPct))*100));
+  const win = collected >= cfg.drops*cfg.winPct;
+  const ecoPoints = win ? Math.round(15+(pct-Math.round(cfg.winPct*100))*0.5) : Math.round(pct*0.15);
+  const score = collected*450 + Math.max(0,timeLeft)*20;
+  const isLast = currentLevel===LEVELS.length-1;
+  if(win && currentLevel+1>unlocked-1+1) unlocked = Math.max(unlocked, currentLevel+2);
+  if(win) unlocked = Math.max(unlocked, Math.min(LEVELS.length, currentLevel+2));
+
+  stage.innerHTML = `
+    <div class="brand"><div class="dot"></div><div>
+      <div class="brand-text">MensIn<span>Black</span></div>
+      <div class="brand-sub">Nivel ${currentLevel+1} &middot; ${cfg.name}</div></div></div>
+    <div class="end-panel ${win?'':'fail'}">
+      <div class="badge ${win?'':'fail'}">${win?'🛁':'⚠'}</div>
+      <div class="victory-title">${win?(isLast?'MISI\u00d3N COMPLETA':'VICTORIA DE NIVEL'):'AGUA PERDIDA'}</div>
+      <div style="font-size:12px;color:#c6b8f0;margin-top:6px;">${win?'Rodmy pudo ba\u00f1arse con el agua a tiempo.':'La tina no se llen\u00f3 lo suficiente antes del tiempo.'}</div>
+      <div class="meter-bar"><div class="meter-fill" style="width:${pct}%"></div></div>
+      <div class="score-row"><span>Tina llena</span><b>${pct}%</b></div>
+      <div class="score-row"><span>Score</span><b>${score.toLocaleString()}</b></div>
+      <div class="score-row"><span>Tiempo restante</span><b>${Math.max(0,timeLeft)}s</b></div>
+      <div class="eco-line">${win?'+':''}${ecoPoints} Eco-Puntos ${win?'&middot; Certified Eco-Agent 🏅':''}</div>
+      ${win && !isLast ? `<button class="btn" onclick="launchLevel(${currentLevel+1})">▶ SIGUIENTE NIVEL</button>` : `<button class="btn" onclick="launchLevel(${currentLevel})">↻ REINTENTAR NIVEL</button>`}
+      <button class="btn secondary" style="margin-top:10px;" onclick="renderStart()">◀ MEN&Uacute;</button>
+    </div>
+    <div class="footer-credit">MensInBlack La Paz &middot; Prototipo de Gameplay</div>`;
+}
+
+renderStart();
+</script>
+</body>
+</html>
