@@ -1,4 +1,5 @@
 <div align="center">
+  <img src="https://raw.githubusercontent.com/elpopas3344/game-development-portfolio/refs/heads/main/assets/portada.jfif" alt="Banner Portafolio Team Alpha" width="100%">
 
 # 🎮 Portafolio de Game Development: Team Alpha
 ### Alvaro Zadok Castro Henao | Jose Ignacio Villarroel Castro
@@ -32,16 +33,19 @@ La construcción de nuestros prototipos se basa en una arquitectura web ligera p
 
 ---
 
-## 🕹️ Galería de Proyectos
+## 🕹️ Galería de Prototipos y Videojuegos
 
-Aquí presentamos la selección de prototipos funcionales desarrollados durante la asignatura:
+A continuación se presenta la selección de prototipos funcionales desarrollados durante la asignatura:
 
-| Proyecto | Género | Descripción | Enlace |
+| Carpeta | Proyecto / Juego | Descripción | Enlace |
 | :--- | :--- | :--- | :--- |
-| **Dorian Quest** | Aventura | Un desafío de exploración y lógica. | [Explorar](./juegos/dorian-quest/) |
-| **Men in Black: La Paz** | Shooter | Acción dinámica con temática local. | [Explorar](./juegos/mensinblack-la-paz-v3/) |
+| 📂 | **Cashflow Dash** | Prototipo de gestión y velocidad. | [Explorar](./juegos/CASHFLOW%20DASH/) |
+| 📂 | **Mens In Black** | Juego de acción y disparos temático. | [Explorar](./juegos/MensInBlack/) |
+| 📂 | **Nutri Aventura** | Videojuego educativo y de exploración. | [Explorar](./juegos/NutriAventura/) |
+| 📂 | **Storytelling** | Experiencia interactiva basada en narrativa. | [Explorar](./juegos/Storytelling/) |
+| 📂 | **Dorian Quest** | Aventura gráfica y de exploración de calabozos. | [Explorar](./juegos/dorianquest/) |
 
-> *Nota: Cada enlace dirige a la documentación técnica, controles específicos y acceso al juego.*
+> *Nota: Cada carpeta de juego contendrá su respectivo archivo README.md con la documentación detallada, controles e instrucciones específicas.*
 
 ---
 
